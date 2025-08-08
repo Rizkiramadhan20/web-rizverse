@@ -3,14 +3,12 @@ import { NextRequest, NextResponse } from "next/server";
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Check if the pathname already has a locale
-  const pathnameHasLocale = /^\/(?:id|en)(?:\/|$)/.test(pathname);
-
-  if (pathnameHasLocale) {
+  // Skip kalau sudah ada locale di URL
+  if (/^\/(?:id|en)(?:\/|$)/.test(pathname)) {
     return NextResponse.next();
   }
 
-  // Skip middleware for static files and API routes
+  // Skip untuk file statis & API
   if (
     pathname.startsWith("/_next") ||
     pathname.startsWith("/api") ||
@@ -21,18 +19,47 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Get the preferred locale from the request
-  const acceptLanguage = request.headers.get("accept-language") || "";
-  const preferredLocale = acceptLanguage.includes("en") ? "en" : "id";
+  // 1. Cek cookie locale
+  const localeCookie = request.cookies.get("locale")?.value as
+    | "id"
+    | "en"
+    | undefined;
+  if (localeCookie) {
+    const newUrl = new URL(`/${localeCookie}${pathname}`, request.url);
+    return NextResponse.redirect(newUrl);
+  }
 
-  // Redirect to the preferred locale
-  const newUrl = new URL(`/${preferredLocale}${pathname}`, request.url);
-  return NextResponse.redirect(newUrl);
+  // 2. Ambil data lokasi & bahasa
+  const country = (
+    request.headers.get("x-vercel-ip-country") || ""
+  ).toLowerCase();
+  const acceptLanguage = request.headers.get("accept-language") || "";
+  const firstLang = acceptLanguage
+    .split(",")[0]
+    .trim()
+    .split("-")[0]
+    .toLowerCase();
+
+  let preferredLocale: "id" | "en" = "en";
+
+  if (country === "id") {
+    preferredLocale = "id";
+  } else if (firstLang === "id") {
+    preferredLocale = "id";
+  }
+
+  // 3. Redirect + set cookie
+  const response = NextResponse.redirect(
+    new URL(`/${preferredLocale}${pathname}`, request.url)
+  );
+  response.cookies.set("locale", preferredLocale, {
+    path: "/",
+    maxAge: 60 * 60 * 24 * 30, // 30 hari
+  });
+
+  return response;
 }
 
 export const config = {
-  matcher: [
-    // Skip all internal paths (_next)
-    "/((?!_next|api|favicon.ico).*)",
-  ],
+  matcher: ["/((?!_next|api|favicon.ico).*)"],
 };
