@@ -6,9 +6,17 @@ import Image from 'next/image';
 
 import logo from '@/base/assets/logo.png';
 
+import { LanguageSwitcher } from '@/components/ui/language-switcher';
+
+import { useParams } from 'next/navigation';
+
 export default function Header() {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const params = useParams();
+
+    // Get locale from params (same as routing system)
+    const currentLocale = ((params?.locale as string) || 'id') as 'id' | 'en';
 
     useEffect(() => {
         const handleScroll = () => {
@@ -20,10 +28,23 @@ export default function Header() {
     }, []);
 
     const navItems = [
-        { href: '#', label: 'Home', isActive: true },
-        { href: '#', label: 'Featured' },
-        { href: '#', label: 'Services' },
-        { href: '#', label: 'Faqs' },
+        {
+            href: `/${currentLocale}`,
+            label: currentLocale === 'en' ? 'Home' : 'Beranda',
+            isActive: true
+        },
+        {
+            href: `/${currentLocale}/featured`,
+            label: currentLocale === 'en' ? 'Featured' : 'Unggulan'
+        },
+        {
+            href: `/${currentLocale}/services`,
+            label: currentLocale === 'en' ? 'Services' : 'Layanan'
+        },
+        {
+            href: `/${currentLocale}/faqs`,
+            label: currentLocale === 'en' ? 'FAQs' : 'FAQ'
+        },
     ];
 
     return (
@@ -62,13 +83,16 @@ export default function Header() {
                         ))}
                     </nav>
 
-                    {/* Download Button */}
-                    <div className="hidden md:block">
+                    {/* Language Switcher and Download Button */}
+                    <div className="hidden md:flex items-center gap-4">
+                        <LanguageSwitcher />
                         <a
                             href="#"
                             className="relative inline-flex items-center px-6 py-3 bg-gradient-to-r from-[#FF5555] to-[#FF7777] text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5 group overflow-hidden"
                         >
-                            <span className="relative z-10">Download</span>
+                            <span className="relative z-10">
+                                {currentLocale === 'en' ? 'Download' : 'Unduh'}
+                            </span>
                             <div className="absolute inset-0 bg-gradient-to-r from-[#FF7777] to-[#FF5555] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         </a>
                     </div>
@@ -107,13 +131,16 @@ export default function Header() {
                                 {item.label}
                             </a>
                         ))}
-                        <div className="pt-4">
+                        <div className="pt-4 space-y-3">
+                            <div className="flex justify-center">
+                                <LanguageSwitcher />
+                            </div>
                             <a
                                 href="#"
                                 className="block w-full text-center py-3 bg-gradient-to-r from-[#FF5555] to-[#FF7777] text-white font-semibold rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105"
                                 onClick={() => setIsMobileMenuOpen(false)}
                             >
-                                Download
+                                {currentLocale === 'en' ? 'Download' : 'Unduh'}
                             </a>
                         </div>
                     </nav>

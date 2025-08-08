@@ -1,12 +1,17 @@
+export interface MultilingualText {
+  id: string;
+  en: string;
+}
+
 export interface Button {
-  label: string;
+  label: MultilingualText;
   href: string;
 }
 
 export interface HomeItem {
   id: string;
-  title: string;
-  description: string;
+  title: MultilingualText;
+  description: MultilingualText;
   image: string;
   button: Button[];
 }

@@ -6,8 +6,14 @@ export const fetchHomeData = async (): Promise<HomeItem> => {
       console.warn("layout not available during build time");
       return {
         id: "",
-        title: "",
-        description: "",
+        title: {
+          id: "",
+          en: "",
+        },
+        description: {
+          id: "",
+          en: "",
+        },
         image: "",
         button: [],
       };
@@ -33,8 +39,14 @@ export const fetchHomeData = async (): Promise<HomeItem> => {
     console.error("Error fetching Home data:", error);
     return {
       id: "",
-      title: "",
-      description: "",
+      title: {
+        id: "",
+        en: "",
+      },
+      description: {
+        id: "",
+        en: "",
+      },
       image: "",
       button: [],
     };

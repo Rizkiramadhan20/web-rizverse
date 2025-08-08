@@ -22,7 +22,23 @@ import Blob1 from "@/base/assets/blobs1.png"
 
 import Blob2 from "@/base/assets/blobs2.png"
 
+import { getLocalizedText, getLocalizedButtonText } from '@/lib/utils';
+
+import { useParams } from 'next/navigation';
+
 export default function HomeLayout({ homeData }: { homeData: HomeItem }) {
+    const params = useParams();
+
+    // Get locale from params (same as routing system)
+    const currentLocale = ((params?.locale as string) || 'id') as 'id' | 'en';
+
+    // Get localized content
+    const localizedTitle = getLocalizedText(homeData.title, currentLocale);
+    const localizedDescription = getLocalizedText(homeData.description, currentLocale);
+    const localizedButtons = homeData.button.map(button =>
+        getLocalizedButtonText(button, currentLocale)
+    );
+
     return (
         <section className="relative min-h-screen flex items-center overflow-hidden bg-white">
             {/* Background decorative elements */}
@@ -139,17 +155,17 @@ export default function HomeLayout({ homeData }: { homeData: HomeItem }) {
                     <div className="space-y-6 md:space-y-8 text-center lg:text-left">
                         {/* Main Headline */}
                         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-black leading-tight capitalize">
-                            {homeData.title}
+                            {localizedTitle}
                         </h1>
 
                         {/* Description */}
                         <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-lg mx-auto lg:mx-0 leading-relaxed">
-                            {homeData.description}
+                            {localizedDescription}
                         </p>
 
                         {/* Call-to-Action Buttons */}
                         <div className="flex flex-row gap-4 justify-center lg:justify-start">
-                            {homeData.button.map((item, idx) => {
+                            {localizedButtons.map((item, idx) => {
                                 if (idx === 0) {
                                     // Primary button with arrow
                                     return (
@@ -191,7 +207,7 @@ export default function HomeLayout({ homeData }: { homeData: HomeItem }) {
                         <div className="relative w-full max-w-md md:max-w-lg lg:max-w-none aspect-[4/5]">
                             <Image
                                 src={homeData.image}
-                                alt={homeData.title}
+                                alt={localizedTitle}
                                 fill
                                 className="object-contain"
                                 priority
