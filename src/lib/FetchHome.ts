@@ -2,7 +2,7 @@ import { HomeItem, HomeResponse } from "@/types/Home";
 
 export const fetchHomeData = async (): Promise<HomeItem> => {
   try {
-    if (!`${process.env.NEXT_PUBLIC_API_LAYOUT as string}/home`) {
+    if (!`${process.env.NEXT_PUBLIC_API as string}/home`) {
       console.warn("layout not available during build time");
       return {
         id: "",
@@ -20,7 +20,7 @@ export const fetchHomeData = async (): Promise<HomeItem> => {
     }
 
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_LAYOUT as string}/home`,
+      `${process.env.NEXT_PUBLIC_API as string}/home`,
       {
         headers: {
           Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_SECRET}`,
