@@ -1,7 +1,12 @@
+export interface MultilingualText {
+  en: string;
+  id: string;
+}
+
 export interface ServiceItem {
   id: string;
-  title: string;
-  description: string;
+  title: MultilingualText;
+  description: MultilingualText;
   image: string;
 }
 

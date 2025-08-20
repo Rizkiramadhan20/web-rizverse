@@ -1,14 +1,14 @@
-import { ServiceItem, ServicesResponse } from "@/types/Services";
+import { PriceItem, PriceResponse } from "@/types/Price";
 
-export const fetchServicesData = async (): Promise<ServiceItem[]> => {
+export const fetchPriceData = async (): Promise<PriceItem[]> => {
   try {
-    if (!`${process.env.NEXT_PUBLIC_API as string}/services`) {
+    if (!`${process.env.NEXT_PUBLIC_API as string}/price`) {
       console.warn("layout not available during build time");
       return [];
     }
 
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API as string}/services`,
+      `${process.env.NEXT_PUBLIC_API as string}/price`,
       {
         headers: {
           Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_SECRET}`,
@@ -21,10 +21,10 @@ export const fetchServicesData = async (): Promise<ServiceItem[]> => {
       throw new Error("Network response was not ok");
     }
 
-    const apiResponse: ServicesResponse = await response.json();
+    const apiResponse: PriceResponse = await response.json();
     return apiResponse.data;
   } catch (error) {
-    console.error("Error fetching Services data:", error);
+    console.error("Error fetching Price data:", error);
     return [];
   }
 };

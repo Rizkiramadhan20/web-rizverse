@@ -1,10 +1,16 @@
 "use client"
 
 import { usePathname, useRouter, useParams } from 'next/navigation';
+
 import { Button } from './button';
+
 import { Globe } from 'lucide-react';
 
-export function LanguageSwitcher() {
+interface LanguageSwitcherProps {
+    onLanguageSwitch?: (from: string, to: string) => void;
+}
+
+export function LanguageSwitcher({ onLanguageSwitch }: LanguageSwitcherProps) {
     const pathname = usePathname();
     const router = useRouter();
     const params = useParams();
@@ -16,6 +22,11 @@ export function LanguageSwitcher() {
     const switchLanguage = () => {
         const newLocale = currentLocale === 'en' ? 'id' : 'en';
 
+        // Call the callback if provided
+        if (onLanguageSwitch) {
+            onLanguageSwitch(currentLocale, newLocale);
+        }
+
         // Handle the case where we're on a route without locale prefix
         let newPath;
         if (pathname.startsWith('/en') || pathname.startsWith('/id')) {
@@ -26,7 +37,10 @@ export function LanguageSwitcher() {
             newPath = `/${newLocale}${pathname}`;
         }
 
-        router.push(newPath);
+        // Delay the navigation to allow overlay to show
+        setTimeout(() => {
+            router.push(newPath);
+        }, 500);
     };
 
     return (

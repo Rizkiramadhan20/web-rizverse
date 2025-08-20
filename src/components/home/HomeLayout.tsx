@@ -40,7 +40,7 @@ export default function HomeLayout({ homeData }: { homeData: HomeItem }) {
     );
 
     return (
-        <section className="relative min-h-screen flex items-center overflow-hidden bg-white">
+        <section className="relative min-h-screen flex items-center overflow-hidden bg-background">
             {/* Background decorative elements */}
             <div className="absolute inset-0 pointer-events-none">
                 {/* Blob decorations */}
@@ -154,17 +154,17 @@ export default function HomeLayout({ homeData }: { homeData: HomeItem }) {
                     {/* Left Section - Text Content */}
                     <div className="space-y-6 md:space-y-8 text-center lg:text-left">
                         {/* Main Headline */}
-                        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-black leading-tight capitalize">
+                        <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-foreground leading-tight capitalize">
                             {localizedTitle}
                         </h1>
 
                         {/* Description */}
-                        <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-lg mx-auto lg:mx-0 leading-relaxed">
+                        <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-lg mx-auto lg:mx-0 leading-relaxed">
                             {localizedDescription}
                         </p>
 
                         {/* Call-to-Action Buttons */}
-                        <div className="flex flex-row gap-4 justify-center lg:justify-start">
+                        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start items-stretch sm:items-center">
                             {localizedButtons.map((item, idx) => {
                                 if (idx === 0) {
                                     // Primary button with arrow
@@ -172,7 +172,7 @@ export default function HomeLayout({ homeData }: { homeData: HomeItem }) {
                                         <Button
                                             key={idx}
                                             asChild
-                                            className="bg-black text-white hover:bg-gray-800 py-6 w-44 text-base md:text-lg font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                                            className="bg-primary text-primary-foreground hover:bg-primary/90 py-5 sm:py-6 w-full sm:w-44 text-base md:text-lg font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
                                         >
                                             <Link href={item.href} className='capitalize'>
                                                 {item.label}
@@ -187,11 +187,11 @@ export default function HomeLayout({ homeData }: { homeData: HomeItem }) {
                                             key={idx}
                                             variant="ghost"
                                             asChild
-                                            className="text-black hover:bg-transparent py-6 w-fit text-base md:text-lg font-medium rounded-lg transition-all duration-300"
+                                            className="text-foreground hover:bg-transparent py-5 sm:py-6 w-full sm:w-fit text-base md:text-lg font-medium rounded-lg transition-all duration-300"
                                         >
-                                            <Link href={item.href} className="flex items-center justify-center lg:justify-start capitalize">
-                                                <div className="w-10 h-10 md:w-12 md:h-12 bg-black rounded-full flex items-center justify-center mr-3">
-                                                    <Play className="w-4 h-4 md:w-5 md:h-5 text-white ml-1" />
+                                            <Link href={item.href} className="flex items-center justify-center sm:justify-start capitalize">
+                                                <div className="w-10 h-10 md:w-12 md:h-12 bg-primary rounded-full flex items-center justify-center mr-3 shrink-0">
+                                                    <Play className="w-4 h-4 md:w-5 md:h-5 text-primary-foreground ml-1" />
                                                 </div>
                                                 {item.label}
                                             </Link>
@@ -203,7 +203,7 @@ export default function HomeLayout({ homeData }: { homeData: HomeItem }) {
                     </div>
 
                     {/* Right Section - Your Image */}
-                    <div className="relative flex justify-center items-center pt-8 md:pt-12 lg:pt-20 order-first lg:order-last">
+                    <div className="relative flex justify-center items-center pt-8 md:pt-12  order-first lg:order-last">
                         <div className="relative w-full max-w-md md:max-w-lg lg:max-w-none aspect-[4/5]">
                             <Image
                                 src={homeData.image}
@@ -214,9 +214,6 @@ export default function HomeLayout({ homeData }: { homeData: HomeItem }) {
                                 quality={100}
                             />
                         </div>
-
-                        {/* Subtle shadow */}
-                        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-48 md:w-64 lg:w-80 h-4 md:h-6 bg-black/10 rounded-full blur-xl"></div>
                     </div>
                 </div>
             </div>

@@ -1,9 +1,17 @@
 import { metadata } from "@/base/Meta/Metadata";
+
 import { geistSans, geistMono } from "@/base/Fonts/Fonts";
+
 import "@/base/style/globals.css";
+
 import Header from "@/base/layout/Header";
 
+import LenisProvider from "@/base/helper/LenisProvider";
+
+import { ThemeProvider } from "@/context/ThemaContext";
+
 export { metadata };
+
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -16,20 +24,27 @@ export default async function RootLayout({
   children,
   params,
 }: RootLayoutProps) {
-  // Get locale from params if available (for [locale] routes)
-  let locale = "id"; // default to Indonesian
+  let locale = "id";
   if (params) {
     const resolvedParams = await params;
     locale = resolvedParams.locale;
   }
 
   return (
-    <html lang={locale}>
+    <html lang={locale} suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Header />
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          disableTransitionOnChange
+          storageKey="theme">
+          <LenisProvider>
+            <Header />
+            {children}
+          </LenisProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

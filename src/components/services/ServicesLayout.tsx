@@ -1,0 +1,81 @@
+"use client"
+
+import React from 'react'
+
+import { ServiceItem } from "@/types/Services";
+
+import { useParams } from 'next/navigation';
+
+import ServiceCard from "@/components/services/card/ServiceCard";
+
+import TrueFocus from "@/components/ui/TrueFocus";
+
+import { motion } from 'motion/react'
+
+export default function ServicesLayout({ serviceData }: { serviceData: ServiceItem[] }) {
+    const params = useParams();
+
+    const currentLocale = ((params?.locale as string) || 'id') as 'id' | 'en';
+
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        show: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.12,
+                delayChildren: 0.1,
+            }
+        }
+    }
+
+    const headerContainer = {
+        hidden: { opacity: 0 },
+        show: {
+            opacity: 1,
+            transition: { staggerChildren: 0.1, delayChildren: 0.05 }
+        }
+    }
+
+    const fadeUp = {
+        hidden: { opacity: 0, y: 12 },
+        show: { opacity: 1, y: 0 }
+    }
+
+    return (
+        <section id="services" className="relative pt-20 md:py-10 overflow-hidden bg-background">
+            <div className="container mx-auto px-4 md:px-6 lg:px-10">
+                <motion.div
+                    className='flex flex-col items-center text-center gap-4 mb-10 md:mb-28'
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: true, amount: 0.3 }}
+                    variants={headerContainer}
+                >
+                    <motion.div variants={fadeUp}>
+                        <TrueFocus
+                            sentence={currentLocale === 'en' ? 'All-in-one platform' : 'Platform lengkap'}
+                            manualMode={false}
+                            blurAmount={5}
+                            borderColor="red"
+                            animationDuration={2}
+                            pauseBetweenAnimations={1}
+                        />
+                    </motion.div>
+                    <motion.p variants={fadeUp} className="text-base sm:text-lg text-muted-foreground max-w-2xl">{currentLocale === 'en' ? 'You take care of the video quality and we take care of everything else ' : 'Anda mengurus kualitas video dan kami mengurus hal lainnya'}</motion.p>
+                </motion.div>
+
+                <motion.div
+                    className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6"
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: true, amount: 0.2 }}
+                    variants={containerVariants}
+                >
+                    {serviceData?.map((item, index) => (
+                        <ServiceCard item={item} key={index} locale={currentLocale} />
+                    ))}
+                </motion.div>
+            </div>
+        </section>
+    )
+}
