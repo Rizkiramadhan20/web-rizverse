@@ -1,9 +1,11 @@
 import React from 'react'
+
 import { motion } from 'motion/react'
 
 import Link from 'next/link'
 
 import { Button } from '@/components/ui/button'
+
 import SplitText from '@/components/ui/SplitText'
 
 import { ArrowRight, Play } from 'lucide-react'
@@ -30,7 +32,7 @@ export default function TextContent({ title, description, buttons }: TextContent
                     as="h1"
                     text={title}
                     splitType="chars"
-                    className="text-3xl sm:text-4xl md:text-6xl font-bold text-foreground leading-tight capitalize"
+                    className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground leading-tight capitalize"
                     from={{ opacity: 0, y: 40 }}
                     to={{ opacity: 1, y: 0 }}
                     delay={40}

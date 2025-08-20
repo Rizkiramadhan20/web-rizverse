@@ -1,8 +1,8 @@
-import { fetchHomeData } from "@/lib/FetchHome";
+import { fetchHomeData } from "@/utils/FetchHome";
 
-import { fetchPriceData } from "@/lib/FetchPrice";
+import { fetchPriceData } from "@/utils/FetchPrice";
 
-import { fetchServicesData } from "@/lib/FetchServices";
+import { fetchServicesData } from "@/utils/FetchServices";
 
 import HomeLayout from "@/components/home/HomeLayout";
 

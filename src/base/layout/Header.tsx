@@ -80,10 +80,6 @@ export default function Header() {
             href: `/${currentLocale}/download`,
             label: currentLocale === 'en' ? 'Download' : 'Unduh'
         },
-        {
-            href: `/${currentLocale}/contact`,
-            label: currentLocale === 'en' ? 'Contact' : 'Kontak'
-        },
     ];
 
     return (
