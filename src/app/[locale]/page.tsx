@@ -1,3 +1,5 @@
+import { Fragment } from "react";
+
 import { fetchHomeData } from "@/utils/FetchHome";
 
 import { fetchPriceData } from "@/utils/FetchPrice";
@@ -16,10 +18,10 @@ export default async function HomePage() {
   const serviceData = await fetchServicesData();
 
   return (
-    <>
+    <Fragment>
       <HomeLayout homeData={homeData} />
       <ServicesLayout serviceData={serviceData} />
       <PriceLayout priceData={priceData} />
-    </>
+    </Fragment>
   );
 }

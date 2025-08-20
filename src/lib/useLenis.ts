@@ -11,7 +11,6 @@ export function useLenis() {
     // Function to get Lenis instance
     const getLenis = () => {
       if (typeof window !== "undefined") {
-        // @ts-expect-error - Lenis adds itself to window
         return window.lenis;
       }
       return null;
@@ -50,7 +49,15 @@ export function useScrollTo() {
     }
   ) => {
     if (lenis) {
-      lenis.scrollTo(target, options);
+      // Use Lenis smooth scrolling
+      lenis.scrollTo(target, {
+        duration: options?.duration || 1.5,
+        offset: options?.offset || 0,
+        easing:
+          options?.easing ||
+          ((t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t))),
+        ...options,
+      });
     } else {
       // Fallback to native smooth scrolling if Lenis is not available
       if (typeof target === "string") {
@@ -82,9 +89,17 @@ export function useScrollProgress() {
     if (!lenis) return;
 
     const updateProgress = () => {
-      setProgress(lenis.progress);
+      // Calculate scroll progress as a percentage
+      const scrollTop = lenis.scroll;
+      const maxScroll = lenis.limit;
+      const progressValue = maxScroll > 0 ? scrollTop / maxScroll : 0;
+      setProgress(progressValue);
     };
 
+    // Update progress immediately
+    updateProgress();
+
+    // Listen to scroll events
     lenis.on("scroll", updateProgress);
 
     return () => {
@@ -93,4 +108,61 @@ export function useScrollProgress() {
   }, [lenis]);
 
   return progress;
+}
+
+// Hook untuk mendapatkan scroll position
+export function useScrollPosition() {
+  const lenis = useLenis();
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    if (!lenis) return;
+
+    const updateScrollY = () => {
+      setScrollY(lenis.scroll);
+    };
+
+    // Update immediately
+    updateScrollY();
+
+    // Listen to scroll events
+    lenis.on("scroll", updateScrollY);
+
+    return () => {
+      lenis.off("scroll", updateScrollY);
+    };
+  }, [lenis]);
+
+  return scrollY;
+}
+
+// Hook untuk mendapatkan scroll direction
+export function useScrollDirection() {
+  const lenis = useLenis();
+  const [direction, setDirection] = useState<"up" | "down" | null>(null);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    if (!lenis) return;
+
+    const updateDirection = () => {
+      const currentScrollY = lenis.scroll;
+
+      if (currentScrollY > lastScrollY) {
+        setDirection("down");
+      } else if (currentScrollY < lastScrollY) {
+        setDirection("up");
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    lenis.on("scroll", updateDirection);
+
+    return () => {
+      lenis.off("scroll", updateDirection);
+    };
+  }, [lenis, lastScrollY]);
+
+  return direction;
 }

@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import Image from 'next/image';
 
@@ -12,96 +12,66 @@ import { Switch } from '@/components/ui/switch';
 
 import { motion } from 'motion/react';
 
-import { useParams } from 'next/navigation';
+import { ThemeSwitchOverlay } from '@/context/SwitchOverlay';
 
-import { useTheme } from "next-themes"
+import { LanguageSwitchOverlay } from '@/context/SwitchOverlayLanguage';
 
-import { ThemeSwitchOverlay, useThemeSwitchOverlay } from '@/context/SwitchOverlay';
+import { ScrollProgressBar } from '@/components/ui/ScrollProgressBar';
 
-import { LanguageSwitchOverlay, useLanguageSwitchOverlay } from '@/context/SwitchOverlayLanguage';
-
-import Link from 'next/link';
+import { useManagementHeader } from './lib/useManagementHeader';
 
 export default function Header() {
-    const [isScrolled, setIsScrolled] = useState(false);
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const [mounted, setMounted] = useState(false);
-    const [isInitialLoading, setIsInitialLoading] = useState(true);
-    const { theme, setTheme } = useTheme();
-    const params = useParams();
-    const { isOverlayVisible, showThemeSwitchOverlay, hideThemeSwitchOverlay } = useThemeSwitchOverlay();
     const {
-        isOverlayVisible: isLangOverlayVisible,
+        // State
+        isScrolled,
+        isMobileMenuOpen,
+        mounted,
+        isInitialLoading,
+        theme,
+
+        // Handlers
+        handleThemeToggle,
+        toggleMobileMenu,
+        closeMobileMenu,
+
+        // Navigation
+        navItems,
+
+        // Context handlers
+        showLanguageSwitchOverlay,
+        hideLanguageSwitchOverlay,
+        hideThemeSwitchOverlay,
+
+        // Context state
         fromLanguage,
         toLanguage,
-        showLanguageSwitchOverlay,
-        hideLanguageSwitchOverlay
-    } = useLanguageSwitchOverlay();
-
-    const currentLocale = ((params?.locale as string) || 'id') as 'id' | 'en';
-
-    const handleThemeToggle = (checked: boolean) => {
-        showThemeSwitchOverlay();
-        setTheme(checked ? 'dark' : 'light');
-    };
-
-    useEffect(() => {
-        setMounted(true);
-        const timer = setTimeout(() => {
-            setIsInitialLoading(false);
-        }, 1000);
-        return () => clearTimeout(timer);
-    }, []);
-
-    useEffect(() => {
-        const handleScroll = () => {
-            setIsScrolled(window.scrollY > 20);
-        };
-
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
-
-    const navItems = [
-        {
-            href: `/${currentLocale}`,
-            label: currentLocale === 'en' ? 'Home' : 'Beranda',
-            isActive: true
-        },
-        {
-            href: `/${currentLocale}/featured`,
-            label: currentLocale === 'en' ? 'Featured' : 'Unggulan'
-        },
-        {
-            href: `/${currentLocale}/#services`,
-            label: currentLocale === 'en' ? 'Services' : 'Layanan'
-        },
-        {
-            href: `/${currentLocale}/download`,
-            label: currentLocale === 'en' ? 'Download' : 'Unduh'
-        },
-    ];
+        isThemeOverlayVisible,
+        isLangOverlayVisible,
+    } = useManagementHeader();
 
     return (
         <>
+            <ScrollProgressBar color="#FF5555" height={3} />
             <ThemeSwitchOverlay
-                isVisible={isOverlayVisible}
+                isVisible={isThemeOverlayVisible}
                 onAnimationComplete={hideThemeSwitchOverlay}
             />
+
             <LanguageSwitchOverlay
                 isVisible={isLangOverlayVisible}
                 onAnimationComplete={hideLanguageSwitchOverlay}
                 fromLanguage={fromLanguage}
                 toLanguage={toLanguage}
             />
-            <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 rounded-b-2xl ${isScrolled
-                ? 'bg-background/80 backdrop-blur-md shadow-lg border-b border-border/50'
+
+            <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 container overflow-hidden ${isScrolled
+                ? 'bg-background/80 backdrop-blur-md shadow-lg border-b border-border/50 rounded-md'
                 : 'bg-background/95 backdrop-blur-sm'
                 }`}>
-                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-16 lg:h-20">
                         {/* Logo */}
-                        <div className="relative">
+                        <div className="relative cursor-pointer" onClick={navItems[0].onClick}>
                             <Image
                                 src={logo}
                                 alt="Rizverse logo"
@@ -114,18 +84,17 @@ export default function Header() {
                         {/* Desktop Navigation */}
                         <nav className="hidden md:flex items-center gap-10">
                             {navItems.map((item, index) => (
-                                <Link
+                                <button
                                     key={index}
-                                    href={item.href}
-                                    className={`relative font-medium transition-all duration-300 group ${item.isActive
+                                    onClick={item.onClick}
+                                    className={`relative cursor-pointer font-medium transition-all duration-300 group ${item.isActive
                                         ? 'text-[#FF5555]'
                                         : 'text-foreground hover:text-[#FF5555]'
                                         }`}
                                 >
                                     {item.label}
-                                    <span className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FF5555] transition-all duration-300 group-hover:w-full ${item.isActive ? 'w-full' : ''
-                                        }`}></span>
-                                </Link>
+                                    <span className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FF5555] transition-all duration-300 group-hover:w-full ${item.isActive ? 'w-full' : ''}`}></span>
+                                </button>
                             ))}
                         </nav>
 
@@ -135,50 +104,48 @@ export default function Header() {
 
                             {mounted && (
                                 <>
-                                    <div>
-                                        <Switch
-                                            id="theme-toggle"
-                                            checked={theme === 'dark'}
-                                            onCheckedChange={handleThemeToggle}
-                                            aria-label="Toggle dark mode"
-                                            thumbContent={
-                                                theme === 'light' ? (
-                                                    <motion.svg
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        className="h-2.5 w-2.5 sm:h-3 sm:w-3"
-                                                        viewBox="0 0 24 24"
-                                                        fill="none"
-                                                        stroke="currentColor"
-                                                        strokeWidth="2"
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        key="light-icon"
-                                                        initial={{ rotate: 0, opacity: 0 }}
-                                                        animate={{ rotate: -360, opacity: 1 }}
-                                                        exit={{ rotate: 0, opacity: 0 }}
-                                                        transition={{ duration: 0.5 }}
-                                                    >
-                                                        <circle cx="12" cy="12" r="4" />
-                                                        <path d="M12 2v2m0 16v2m9-9h-2M5 12H3m14.85-6.85L16.4 7.6M7.6 16.4l-1.45 1.45m0-9.9L7.6 7.6M16.4 16.4l1.45 1.45" />
-                                                    </motion.svg>
-                                                ) : (
-                                                    <motion.svg
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        className="h-2.5 w-2.5 sm:h-3 sm:w-3"
-                                                        viewBox="0 0 24 24"
-                                                        key="dark-icon"
-                                                        initial={{ rotate: 0, opacity: 0 }}
-                                                        animate={{ rotate: 360, opacity: 1 }}
-                                                        exit={{ rotate: 0, opacity: 0 }}
-                                                        transition={{ duration: 0.5 }}
-                                                    >
-                                                        <circle cx="12" cy="12" r="11" fill="#60A5FA" />
-                                                        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" fill="#FCD34D" />
-                                                    </motion.svg>
-                                                )
-                                            }
-                                        />
-                                    </div>
+                                    <Switch
+                                        id="theme-toggle"
+                                        checked={theme === 'dark'}
+                                        onCheckedChange={handleThemeToggle}
+                                        aria-label="Toggle dark mode"
+                                        thumbContent={
+                                            theme === 'light' ? (
+                                                <motion.svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    className="h-2.5 w-2.5 sm:h-3 sm:w-3"
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    strokeWidth="2"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    key="light-icon"
+                                                    initial={{ rotate: 0, opacity: 0 }}
+                                                    animate={{ rotate: -360, opacity: 1 }}
+                                                    exit={{ rotate: 0, opacity: 0 }}
+                                                    transition={{ duration: 0.5 }}
+                                                >
+                                                    <circle cx="12" cy="12" r="4" />
+                                                    <path d="M12 2v2m0 16v2m9-9h-2M5 12H3m14.85-6.85L16.4 7.6M7.6 16.4l-1.45 1.45m0-9.9L7.6 7.6M16.4 16.4l1.45 1.45" />
+                                                </motion.svg>
+                                            ) : (
+                                                <motion.svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    className="h-2.5 w-2.5 sm:h-3 sm:w-3"
+                                                    viewBox="0 0 24 24"
+                                                    key="dark-icon"
+                                                    initial={{ rotate: 0, opacity: 0 }}
+                                                    animate={{ rotate: 360, opacity: 1 }}
+                                                    exit={{ rotate: 0, opacity: 0 }}
+                                                    transition={{ duration: 0.5 }}
+                                                >
+                                                    <circle cx="12" cy="12" r="11" fill="#60A5FA" />
+                                                    <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" fill="#FCD34D" />
+                                                </motion.svg>
+                                            )
+                                        }
+                                    />
                                 </>
                             )}
                         </div>
@@ -252,7 +219,7 @@ export default function Header() {
 
                             {/* Mobile Menu Button */}
                             <button
-                                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                                onClick={toggleMobileMenu}
                                 className="p-2 rounded-lg hover:bg-accent transition-colors duration-200"
                                 aria-label="Toggle mobile menu"
                             >
@@ -273,17 +240,19 @@ export default function Header() {
                         }`}>
                         <nav className="py-4 space-y-3 border-t border-border">
                             {navItems.map((item, index) => (
-                                <a
+                                <button
                                     key={index}
-                                    href={item.href}
-                                    className={`block py-2 px-4 rounded-lg font-medium transition-all duration-200 ${item.isActive
+                                    onClick={() => {
+                                        item.onClick();
+                                        closeMobileMenu();
+                                    }}
+                                    className={`block w-full text-left py-2 px-4 rounded-lg font-medium transition-all duration-200 ${item.isActive
                                         ? 'text-[#FF5555] bg-red-50 dark:bg-red-950/20'
                                         : 'text-foreground hover:text-[#FF5555] hover:bg-accent'
                                         }`}
-                                    onClick={() => setIsMobileMenuOpen(false)}
                                 >
                                     {item.label}
-                                </a>
+                                </button>
                             ))}
                         </nav>
                     </div>

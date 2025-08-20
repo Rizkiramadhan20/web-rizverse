@@ -1,28 +1,19 @@
 "use client"
 
 import React from 'react'
-
 import Image from 'next/image'
-
 import { Button } from '@/components/ui/button'
-
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-
 import { Monitor, Smartphone, Apple, Laptop, Download as DownloadIcon } from 'lucide-react'
-
 import logo from '@/base/assets/logo.png'
-
 import { DownloadItem } from "@/types/Download"
-
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-
-import BlurText from "@/components/ui/BlurText";
-
+import BlurText from "@/components/ui/BlurText"
 import { motion } from 'framer-motion'
+import { useParams } from 'next/navigation'
+import { useManagementDownload } from './lib/useManagementDownload'
 
 type PlatformKey = 'android' | 'ios' | 'macos' | 'windows'
-
-import { useParams } from 'next/navigation'
 
 // Localized text content
 const localizedTexts = {
@@ -104,143 +95,25 @@ export default function DownloadLayout({ downloadData, preferredPlatform }: { do
     const params = useParams()
     const currentLocale = ((params?.locale as string) || 'id') as 'id' | 'en'
 
-    const platforms = [
-        { key: 'android', label: 'Android', Icon: Smartphone },
-        { key: 'ios', label: 'iOS', Icon: Apple },
-        { key: 'macos', label: 'macOS', Icon: Laptop },
-        { key: 'windows', label: 'Windows', Icon: Monitor },
-    ] as const
+    // Use the custom hook for state management
+    const {
+        platforms,
+        groupedByVersion,
+        sortedVersions,
+        latestVersion,
+        platformMetaByKey,
+        selectedItem,
+        selectedPlatformLabel,
+        handleDownload
+    } = useManagementDownload(downloadData, preferredPlatform)
 
-    // Function to download file directly without navigation
-    const downloadFile = async (url: string, filename?: string) => {
-        try {
-            // For Google Drive links, we need to handle them differently
-            if (url.includes('drive.google.com')) {
-                // Extract file ID and create a direct download link
-                const fileId = url.match(/\/d\/([a-zA-Z0-9-_]+)/)?.[1]
-                if (fileId) {
-                    // Create a temporary link element for direct download
-                    const link = document.createElement('a')
-                    link.href = `https://drive.google.com/uc?export=download&id=${fileId}`
-                    link.download = filename || 'rizverse-download'
-                    link.target = '_blank'
-                    link.rel = 'noopener noreferrer'
-
-                    // Add to DOM, click, and remove
-                    document.body.appendChild(link)
-                    link.click()
-                    document.body.removeChild(link)
-                    return
-                }
-            }
-
-            // For other URLs, try to fetch and download
-            const response = await fetch(url, {
-                method: 'GET',
-                mode: 'cors',
-                credentials: 'omit'
-            })
-
-            if (!response.ok) {
-                throw new Error(`Download failed: ${response.status}`)
-            }
-
-            const blob = await response.blob()
-            const downloadUrl = window.URL.createObjectURL(blob)
-
-            const link = document.createElement('a')
-            link.href = downloadUrl
-            link.download = filename || 'rizverse-download'
-            document.body.appendChild(link)
-            link.click()
-            document.body.removeChild(link)
-
-            window.URL.revokeObjectURL(downloadUrl)
-        } catch (error) {
-            console.error('Download error:', error)
-
-            // For Google Drive, always fallback to direct link
-            if (url.includes('drive.google.com')) {
-                const fileId = url.match(/\/d\/([a-zA-Z0-9-_]+)/)?.[1]
-                if (fileId) {
-                    const directDownloadUrl = `https://drive.google.com/uc?export=download&id=${fileId}`
-                    window.open(directDownloadUrl, '_blank')
-                    return
-                }
-            }
-
-            // Fallback: open in new tab if direct download fails
-            window.open(url, '_blank')
-        }
+    // Icon mapping for rendering
+    const iconMap = {
+        Smartphone,
+        Apple,
+        Laptop,
+        Monitor
     }
-
-    // Function to handle Google Drive links specifically
-    const handleDownload = (url: string, filename?: string) => {
-        if (url.includes('drive.google.com')) {
-            // For Google Drive, extract file ID and create direct download
-            const fileId = url.match(/\/d\/([a-zA-Z0-9-_]+)/)?.[1]
-            if (fileId) {
-                // Create a temporary link element for direct download
-                const link = document.createElement('a')
-                link.href = `https://drive.google.com/uc?export=download&id=${fileId}`
-                link.download = filename || 'rizverse-download'
-                link.target = '_blank'
-                link.rel = 'noopener noreferrer'
-
-                // Add to DOM, click, and remove
-                document.body.appendChild(link)
-                link.click()
-                document.body.removeChild(link)
-            } else {
-                // Fallback to opening in new tab
-                window.open(url, '_blank')
-            }
-        } else {
-            // For other URLs, try direct download
-            downloadFile(url, filename)
-        }
-    }
-
-    const groupedByVersion: Record<string, DownloadItem[]> = downloadData.reduce((acc, item) => {
-        if (!acc[item.version]) acc[item.version] = []
-        acc[item.version].push(item)
-        return acc
-    }, {} as Record<string, DownloadItem[]>)
-
-    const compareVersions = (a: string, b: string) => {
-        const pa = a.split('.').map(Number)
-        const pb = b.split('.').map(Number)
-        const len = Math.max(pa.length, pb.length)
-        for (let i = 0; i < len; i++) {
-            const da = pa[i] || 0
-            const db = pb[i] || 0
-            if (da !== db) return db - da // desc
-        }
-        return 0
-    }
-
-    const sortedVersions = Object.keys(groupedByVersion).sort(compareVersions)
-
-    const latestVersion = sortedVersions[0]
-    const latestItems = latestVersion ? (groupedByVersion[latestVersion] || []) : []
-
-    const platformMetaByKey = Object.fromEntries(platforms.map(p => [p.key, { label: p.label, Icon: p.Icon }])) as Record<PlatformKey, { label: string; Icon: typeof Smartphone }>
-
-    const selectedItem: DownloadItem | undefined = (() => {
-        if (latestItems.length === 0) return undefined
-        if (preferredPlatform) {
-            const match = latestItems.find(i => i.type === preferredPlatform)
-            if (match) return match
-        }
-        // Fallback: first available by the predefined order
-        for (const { key } of platforms) {
-            const match = latestItems.find(i => i.type === key)
-            if (match) return match
-        }
-        return latestItems[0]
-    })()
-
-    const selectedPlatformLabel = selectedItem ? platformMetaByKey[(selectedItem.type as PlatformKey) || 'windows']?.label : undefined
 
     return (
         <section className="min-h-screen py-10 flex items-center relative overflow-hidden">
@@ -302,7 +175,7 @@ export default function DownloadLayout({ downloadData, preferredPlatform }: { do
                             >
                                 {(() => {
                                     const meta = platformMetaByKey[(selectedItem.type as PlatformKey) || 'windows']
-                                    const Icon = meta?.Icon || Monitor
+                                    const Icon = meta?.Icon ? iconMap[meta.Icon as keyof typeof iconMap] || Monitor : Monitor
                                     return <Icon className="size-5" />
                                 })()}
                                 {localizedTexts[currentLocale].downloadFor} {platformMetaByKey[(selectedItem.type as PlatformKey) || 'windows']?.label || 'Windows'}
@@ -361,6 +234,7 @@ export default function DownloadLayout({ downloadData, preferredPlatform }: { do
                                         <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
                                             {platforms.map(({ key, label, Icon }, platformIdx) => {
                                                 const items = (groupedByVersion[version] || []).filter((i) => i.type === key)
+                                                const IconComponent = iconMap[Icon as keyof typeof iconMap] || Monitor
                                                 return (
                                                     <motion.div
                                                         key={key}
@@ -371,7 +245,7 @@ export default function DownloadLayout({ downloadData, preferredPlatform }: { do
                                                         <Card className='p-0 bg-card'>
                                                             <CardHeader className="py-4">
                                                                 <div className="flex items-center gap-2 border-b-2 pb-2">
-                                                                    <Icon className="size-4" />
+                                                                    <IconComponent className="size-4" />
                                                                     <CardTitle className="text-base font-medium">{label}</CardTitle>
                                                                 </div>
                                                             </CardHeader>

@@ -26,7 +26,6 @@ export default function PriceCard({ item, index, currentLocale }: PriceCardProps
 
     return (
         <Card className="bg-transparent border-0 p-0 relative">
-
             <CardHeader className="mb-4">
                 <CardTitle className="text-lg font-medium">{item.title[currentLocale]}</CardTitle>
                 {item.labelDisc && item.discount && (
