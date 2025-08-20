@@ -14,7 +14,7 @@ export const fetchHomeData = async (): Promise<HomeItem> => {
           id: "",
           en: "",
         },
-        image: "",
+        image: [],
         button: [],
       };
     }
@@ -47,7 +47,7 @@ export const fetchHomeData = async (): Promise<HomeItem> => {
         id: "",
         en: "",
       },
-      image: "",
+      image: [],
       button: [],
     };
   }

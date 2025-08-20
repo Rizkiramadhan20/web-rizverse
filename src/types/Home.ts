@@ -12,7 +12,7 @@ export interface HomeItem {
   id: string;
   title: MultilingualText;
   description: MultilingualText;
-  image: string;
+  image: string[];
   button: Button[];
 }
 
