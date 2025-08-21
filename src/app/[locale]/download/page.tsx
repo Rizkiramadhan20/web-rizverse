@@ -5,6 +5,7 @@ import DownloadLayout from '@/components/download/DownloadLayout'
 export { metadata } from '@/components/download/meta/Metadata'
 
 import { fetchDownloadData } from "@/utils/FetchDownload";
+
 import { headers } from 'next/headers'
 
 export default async function DownloadPage() {

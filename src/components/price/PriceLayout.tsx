@@ -37,7 +37,7 @@ export default function PriceLayout({ priceData }: { priceData: PriceItem[] }) {
 
     return (
         <section id="pricing" className="relative py-10 bg-background overflow-hidden">
-            <div className="container mx-auto px-4 md:px-6 lg:px-10">
+            <div className="container px-4 md:px-6 lg:px-10">
                 <div
                     className="mb-8 md:mb-12 flex flex-col md:flex-row md:items-center md:justify-between gap-4"
                 >
