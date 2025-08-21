@@ -18,7 +18,7 @@ import { LanguageSwitchOverlay } from '@/context/SwitchOverlayLanguage';
 
 import { ScrollProgressBar } from '@/components/ui/ScrollProgressBar';
 
-import { useManagementHeader } from './lib/useManagementHeader';
+import { useManagementHeader } from '@/base/layout/lib/useManagementHeader';
 
 export default function Header() {
     const {

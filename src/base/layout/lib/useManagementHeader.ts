@@ -1,10 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
+
 import { useParams, usePathname, useRouter } from "next/navigation";
+
 import { useTheme } from "next-themes";
+
 import { useThemeSwitchOverlay } from "@/context/SwitchOverlay";
+
 import { useLanguageSwitchOverlay } from "@/context/SwitchOverlayLanguage";
+
 import {
   useScrollTo,
   useScrollProgress,
@@ -75,7 +80,7 @@ export const useManagementHeader = () => {
   // Scroll spy to detect active section
   useEffect(() => {
     if (typeof window !== "undefined" && pathname === `/${currentLocale}`) {
-      const sections = ["services", "pricing"];
+      const sections = ["services", "pricing", "featured"];
       const headerHeight = 80;
 
       const handleScroll = () => {
@@ -179,6 +184,12 @@ export const useManagementHeader = () => {
       label: currentLocale === "en" ? "Home" : "Beranda",
       isActive: isActiveLink(`/${currentLocale}`),
       onClick: handleHomeNavigation,
+    },
+    {
+      href: `/${currentLocale}#featured`,
+      label: currentLocale === "en" ? "Featured" : "Fitur",
+      isActive: isActiveLink(`/${currentLocale}#featured`, true),
+      onClick: () => handleSectionNavigation("featured"),
     },
     {
       href: `/${currentLocale}#services`,

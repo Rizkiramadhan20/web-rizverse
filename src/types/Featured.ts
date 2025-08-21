@@ -1,14 +1,21 @@
-export interface Feature {
-  title: string;
-  description: string;
+export type Locale = "id" | "en";
+
+export interface TranslatedText {
+  id: string;
+  en: string;
+}
+
+export interface FeatureEntry {
+  title: TranslatedText;
+  description: TranslatedText;
 }
 
 export interface FeaturedItem {
   id: string;
-  title: string;
-  text: string;
+  title: TranslatedText;
+  text: TranslatedText;
   image: string;
-  features: Feature[];
+  features: FeatureEntry[];
 }
 
 export interface FeaturedResponse {

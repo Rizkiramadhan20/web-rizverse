@@ -18,15 +18,13 @@ export default function PriceLayout({ priceData }: { priceData: PriceItem[] }) {
     const params = useParams()
     const currentLocale = ((params?.locale as string) || 'id') as 'id' | 'en'
 
-    // Tambahkan state untuk filter, default 'semua'
     const [filter, setFilter] = useState<'semua' | 'tahun' | 'bulan'>('semua')
 
-    // Filter data berdasarkan pilihan tahun/bulan/semua
     const filteredData = priceData.filter(item => {
         const pkg = (item.paket_up || '').toLowerCase()
         if (filter === 'tahun') return pkg.includes('tahun') || pkg.includes('year')
         if (filter === 'bulan') return pkg.includes('bulan') || pkg.includes('month')
-        return true // 'semua' tampilkan semua
+        return true
     })
 
     const categoryKeys: Array<'semua' | 'tahun' | 'bulan'> = ['semua', 'tahun', 'bulan']
@@ -37,7 +35,7 @@ export default function PriceLayout({ priceData }: { priceData: PriceItem[] }) {
     }
 
     return (
-        <section id="pricing" className="relative py-10 bg-background">
+        <section id="pricing" className="relative py-10 bg-background overflow-hidden">
             <div className="container mx-auto px-4 md:px-6 lg:px-10">
                 <div
                     className="mb-8 md:mb-12 flex flex-col md:flex-row md:items-center md:justify-between gap-4"
