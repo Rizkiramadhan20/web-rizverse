@@ -1,10 +1,6 @@
 import { fetchDownloadData } from "@/utils/FetchDownload";
 
-const BASE_URL =
-  process.env.NEXT_PUBLIC_BASE_URL ||
-  (process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : "http://localhost:3000");
+import { headers } from "next/headers";
 
 // Add XML escape function
 function escapeXml(unsafe?: string): string {
@@ -22,7 +18,12 @@ async function getDownloadUrls() {
     const downloadData = await fetchDownloadData();
 
     // Group by version and create URLs for each version
-    const downloadUrls = [];
+    const downloadUrls: Array<{
+      url: string;
+      lastmod: string;
+      priority: string;
+      changefreq: string;
+    }> = [];
     const versions = [...new Set(downloadData.map((item) => item.version))];
 
     for (const version of versions) {
@@ -50,7 +51,7 @@ async function getDownloadUrls() {
   }
 }
 
-async function generateSitemap() {
+async function generateSitemap(baseUrl: string) {
   const staticUrls = [
     {
       url: "/",
@@ -134,7 +135,7 @@ async function generateSitemap() {
 ${urls
   .map((item) => {
     return `  <url>
-    <loc>${escapeXml(BASE_URL)}${escapeXml(item.url)}</loc>
+    <loc>${escapeXml(baseUrl)}${escapeXml(item.url)}</loc>
     <lastmod>${item.lastmod}</lastmod>
     <changefreq>${item.changefreq}</changefreq>
     <priority>${item.priority}</priority>
@@ -149,7 +150,12 @@ ${urls
 // INI ROUTE HANDLER NEXT 13/14 YANG BENAR UNTUK GENERATE SITEMAP
 export async function GET() {
   try {
-    const body = await generateSitemap();
+    const h = await headers();
+    const proto = h.get("x-forwarded-proto") || "https";
+    const host = h.get("host") || "localhost:3000";
+    const baseUrl = `${proto}://${host}`;
+
+    const body = await generateSitemap(baseUrl);
 
     return new Response(body, {
       headers: {
