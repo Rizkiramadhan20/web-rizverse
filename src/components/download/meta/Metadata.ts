@@ -1,30 +1,33 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Download Rizverse",
-  description: "Download Rizverse",
+  title: "Unduh Rizverse - Download Aplikasi Anime, Donghua, Manga & Film",
+  description:
+    "Unduh aplikasi Rizverse untuk Android, iOS, macOS, dan Windows. Nikmati ribuan judul anime, donghua, manga, dan film berkualitas tinggi dengan pengalaman streaming terbaik.",
   alternates: {
     canonical: "/download",
   },
   openGraph: {
-    title: "Download Rizverse",
-    description: "Download Rizverse",
-    url: "https://rizverse.com/download",
+    title: "Unduh Rizverse - Download Aplikasi Anime, Donghua, Manga & Film",
+    description:
+      "Unduh aplikasi Rizverse untuk Android, iOS, macOS, dan Windows. Nikmati ribuan judul anime, donghua, manga, dan film berkualitas tinggi dengan pengalaman streaming terbaik.",
+    url: "http://rizverse.my.id/download",
     siteName: "Rizverse",
     images: [
       {
-        url: "https://rizverse.com/logo.png",
+        url: "http://rizverse.my.id/logo.png",
         width: 800,
         height: 600,
-        alt: "Rizverse",
+        alt: "Rizverse Download",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Download Rizverse",
-    description: "Download Rizverse",
-    images: ["https://rizverse.com/logo.png"],
+    title: "Unduh Rizverse - Download Aplikasi Anime, Donghua, Manga & Film",
+    description:
+      "Unduh aplikasi Rizverse untuk Android, iOS, macOS, dan Windows. Nikmati ribuan judul anime, donghua, manga, dan film berkualitas tinggi dengan pengalaman streaming terbaik.",
+    images: ["http://rizverse.my.id/logo.png"],
   },
   robots: {
     index: true,
@@ -34,8 +37,26 @@ export const metadata: Metadata = {
     icon: "/favicon.ico",
   },
   manifest: "/manifest.json",
-  keywords: ["Rizverse", "Download", "Rizverse Download"],
-  authors: [{ name: "Rizverse", url: "https://rizverse.com" }],
+  keywords: [
+    "Rizverse",
+    "Download Rizverse",
+    "Unduh Rizverse",
+    "Anime App",
+    "Donghua App",
+    "Manga App",
+    "Film App",
+    "Streaming App",
+    "Android App",
+    "iOS App",
+    "macOS App",
+    "Windows App",
+    "Entertainment Platform",
+    "Anime Streaming",
+    "Donghua Streaming",
+    "Manga Reader",
+    "Film Streaming",
+  ],
+  authors: [{ name: "Rizverse", url: "http://rizverse.my.id" }],
   creator: "Rizverse",
   publisher: "Rizverse",
   category: "technology",
