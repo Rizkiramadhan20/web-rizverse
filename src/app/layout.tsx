@@ -12,6 +12,8 @@ import LenisProvider from "@/base/helper/LenisProvider";
 
 import { ThemeProvider } from "@/context/ThemaContext";
 
+import { GoogleTagManager, GoogleTagManagerNoScript } from '@/base/analytics/GoogleTagManager'
+
 export { metadata };
 
 interface RootLayoutProps {
@@ -33,9 +35,13 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning>
+      <head>
+        <GoogleTagManager />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <GoogleTagManagerNoScript />
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
