@@ -1,8 +1,12 @@
+// Static base URL for robots.txt generation (no dynamic headers usage)
 const BASE_URL =
-  process.env.NEXT_PUBLIC_BASE_URL ||
+  process.env.NEXT_PUBLIC_URL ||
   (process.env.VERCEL_URL
     ? `https://${process.env.VERCEL_URL}`
-    : "http://localhost:3000");
+    : "https://rizverse.my.id");
+
+// Revalidate robots.txt periodically
+export const revalidate = 3600; // seconds
 
 export async function GET() {
   const robotsTxt = `# Rizverse Robots.txt

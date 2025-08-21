@@ -1,6 +1,14 @@
 import { fetchDownloadData } from "@/utils/FetchDownload";
 
-import { headers } from "next/headers";
+// Static base URL for sitemap generation (no dynamic headers usage)
+const BASE_URL =
+  process.env.NEXT_PUBLIC_URL ||
+  (process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : "https://rizverse.my.id");
+
+// Revalidate sitemap periodically
+export const revalidate = 3600; // seconds
 
 // Add XML escape function
 function escapeXml(unsafe?: string): string {
@@ -150,12 +158,7 @@ ${urls
 // INI ROUTE HANDLER NEXT 13/14 YANG BENAR UNTUK GENERATE SITEMAP
 export async function GET() {
   try {
-    const h = await headers();
-    const proto = h.get("x-forwarded-proto") || "https";
-    const host = h.get("host") || "localhost:3000";
-    const baseUrl = `${proto}://${host}`;
-
-    const body = await generateSitemap(baseUrl);
+    const body = await generateSitemap(BASE_URL);
 
     return new Response(body, {
       headers: {
