@@ -56,6 +56,7 @@ export const metadata = {
   manifest: "/manifest.json",
 
   metadataBase: new URL(BASE_URL),
+
   canonical: BASE_URL,
 
   other: {
@@ -94,10 +95,6 @@ export const metadata = {
     images: ["/og-image.jpg"],
   },
 
-  verification: {
-    googleTagManager: process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID,
-  },
-
   robots: {
     index: true,
     follow: true,
@@ -107,6 +104,7 @@ export const metadata = {
     canonical: BASE_URL,
     languages: {
       "id-ID": BASE_URL,
+      "en-US": BASE_URL,
     },
   },
 };

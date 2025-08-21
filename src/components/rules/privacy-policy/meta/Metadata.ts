@@ -1,21 +1,23 @@
 import type { Metadata } from "next";
 
+const BASE_URL = process.env.NEXT_PUBLIC_URL;
+
 export const metadata: Metadata = {
   title: "Kebijakan Privasi - Rizverse",
   description:
     "Pelajari bagaimana Rizverse mengumpulkan, menggunakan, dan melindungi informasi pribadi Anda. Kami berkomitmen untuk melindungi privasi dan keamanan data Anda.",
   alternates: {
-    canonical: "/rules/privacy-policy",
+    canonical: BASE_URL,
   },
   openGraph: {
     title: "Kebijakan Privasi - Rizverse",
     description:
       "Pelajari bagaimana Rizverse mengumpulkan, menggunakan, dan melindungi informasi pribadi Anda. Kami berkomitmen untuk melindungi privasi dan keamanan data Anda.",
-    url: "http://rizverse.my.id/rules/privacy-policy",
+    url: BASE_URL,
     siteName: "Rizverse",
     images: [
       {
-        url: "http://rizverse.my.id/logo.png",
+        url: `${BASE_URL}/logo.png`,
         width: 800,
         height: 600,
         alt: "Rizverse Privacy Policy",
@@ -27,7 +29,7 @@ export const metadata: Metadata = {
     title: "Kebijakan Privasi - Rizverse",
     description:
       "Pelajari bagaimana Rizverse mengumpulkan, menggunakan, dan melindungi informasi pribadi Anda. Kami berkomitmen untuk melindungi privasi dan keamanan data Anda.",
-    images: ["http://rizverse.my.id/logo.png"],
+    images: [`${BASE_URL}/logo.png`],
   },
   robots: {
     index: true,
@@ -47,7 +49,7 @@ export const metadata: Metadata = {
     "User Rights",
     "Data Security",
   ],
-  authors: [{ name: "Rizverse", url: "http://rizverse.my.id" }],
+  authors: [{ name: "Rizverse", url: BASE_URL }],
   creator: "Rizverse",
   publisher: "Rizverse",
   category: "technology",

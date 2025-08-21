@@ -1,21 +1,24 @@
 import type { Metadata } from "next";
 
+const BASE_URL = process.env.NEXT_PUBLIC_URL || "http://rizverse.my.id";
+
 export const metadata: Metadata = {
   title: "Unduh Rizverse - Download Aplikasi Anime, Donghua, Manga & Film",
   description:
     "Unduh aplikasi Rizverse untuk Android, iOS, macOS, dan Windows. Nikmati ribuan judul anime, donghua, manga, dan film berkualitas tinggi dengan pengalaman streaming terbaik.",
   alternates: {
-    canonical: "/download",
+    // Canonical should point to root domain for equivalent content
+    canonical: BASE_URL,
   },
   openGraph: {
     title: "Unduh Rizverse - Download Aplikasi Anime, Donghua, Manga & Film",
     description:
       "Unduh aplikasi Rizverse untuk Android, iOS, macOS, dan Windows. Nikmati ribuan judul anime, donghua, manga, dan film berkualitas tinggi dengan pengalaman streaming terbaik.",
-    url: "http://rizverse.my.id/download",
+    url: BASE_URL,
     siteName: "Rizverse",
     images: [
       {
-        url: "http://rizverse.my.id/logo.png",
+        url: `${BASE_URL}/logo.png`,
         width: 800,
         height: 600,
         alt: "Rizverse Download",
@@ -27,7 +30,7 @@ export const metadata: Metadata = {
     title: "Unduh Rizverse - Download Aplikasi Anime, Donghua, Manga & Film",
     description:
       "Unduh aplikasi Rizverse untuk Android, iOS, macOS, dan Windows. Nikmati ribuan judul anime, donghua, manga, dan film berkualitas tinggi dengan pengalaman streaming terbaik.",
-    images: ["http://rizverse.my.id/logo.png"],
+    images: [`${BASE_URL}/logo.png`],
   },
   robots: {
     index: true,
@@ -56,7 +59,7 @@ export const metadata: Metadata = {
     "Manga Reader",
     "Film Streaming",
   ],
-  authors: [{ name: "Rizverse", url: "http://rizverse.my.id" }],
+  authors: [{ name: "Rizverse", url: BASE_URL }],
   creator: "Rizverse",
   publisher: "Rizverse",
   category: "technology",

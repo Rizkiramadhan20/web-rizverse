@@ -1,19 +1,23 @@
 import type { Metadata } from "next";
 
+const BASE_URL = process.env.NEXT_PUBLIC_URL;
+
 export const metadata: Metadata = {
   title: "Kebijakan Cookie - Rizverse",
-  description: "Pelajari bagaimana Rizverse menggunakan cookie dan teknologi pelacakan untuk meningkatkan pengalaman pengguna dan menganalisis penggunaan website.",
+  description:
+    "Pelajari bagaimana Rizverse menggunakan cookie dan teknologi pelacakan untuk meningkatkan pengalaman pengguna dan menganalisis penggunaan website.",
   alternates: {
-    canonical: "/rules/cookies-policy",
+    canonical: BASE_URL,
   },
   openGraph: {
     title: "Kebijakan Cookie - Rizverse",
-    description: "Pelajari bagaimana Rizverse menggunakan cookie dan teknologi pelacakan untuk meningkatkan pengalaman pengguna dan menganalisis penggunaan website.",
-    url: "http://rizverse.my.id/rules/cookies-policy",
+    description:
+      "Pelajari bagaimana Rizverse menggunakan cookie dan teknologi pelacakan untuk meningkatkan pengalaman pengguna dan menganalisis penggunaan website.",
+    url: BASE_URL,
     siteName: "Rizverse",
     images: [
       {
-        url: "http://rizverse.my.id/logo.png",
+        url: `${BASE_URL}/logo.png`,
         width: 800,
         height: 600,
         alt: "Rizverse Cookies Policy",
@@ -23,8 +27,9 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Kebijakan Cookie - Rizverse",
-    description: "Pelajari bagaimana Rizverse menggunakan cookie dan teknologi pelacakan untuk meningkatkan pengalaman pengguna dan menganalisis penggunaan website.",
-    images: ["http://rizverse.my.id/logo.png"],
+    description:
+      "Pelajari bagaimana Rizverse menggunakan cookie dan teknologi pelacakan untuk meningkatkan pengalaman pengguna dan menganalisis penggunaan website.",
+    images: [`${BASE_URL}/logo.png`],
   },
   robots: {
     index: true,
@@ -34,8 +39,16 @@ export const metadata: Metadata = {
     icon: "/favicon.ico",
   },
   manifest: "/manifest.json",
-  keywords: ["Rizverse", "Kebijakan Cookie", "Cookie Policy", "Privacy", "Data Protection", "Website Cookies", "Tracking Technologies"],
-  authors: [{ name: "Rizverse", url: "http://rizverse.my.id" }],
+  keywords: [
+    "Rizverse",
+    "Kebijakan Cookie",
+    "Cookie Policy",
+    "Privacy",
+    "Data Protection",
+    "Website Cookies",
+    "Tracking Technologies",
+  ],
+  authors: [{ name: "Rizverse", url: BASE_URL }],
   creator: "Rizverse",
   publisher: "Rizverse",
   category: "technology",
