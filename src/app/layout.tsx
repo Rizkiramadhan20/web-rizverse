@@ -6,12 +6,13 @@ import "@/base/style/globals.css";
 
 import Header from "@/base/layout/Header";
 
+import Footer from "@/base/layout/Footer"
+
 import LenisProvider from "@/base/helper/LenisProvider";
 
 import { ThemeProvider } from "@/context/ThemaContext";
 
 export { metadata };
-
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -43,6 +44,7 @@ export default async function RootLayout({
           <LenisProvider>
             <Header />
             {children}
+            <Footer />
           </LenisProvider>
         </ThemeProvider>
       </body>

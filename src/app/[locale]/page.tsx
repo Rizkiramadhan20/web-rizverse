@@ -10,11 +10,15 @@ import { fetchFeaturedData } from "@/utils/FetchFeatured";
 
 import { fetchBannerData } from "@/utils/FetchBanner";
 
+import { fetchFaqsData } from "@/utils/FetchFaqs";
+
 import HomeLayout from "@/components/home/HomeLayout";
 
 import ServicesLayout from "@/components/services/ServicesLayout";
 
 import PriceLayout from "@/components/price/PriceLayout";
+
+import FaqsLayout from "@/components/faqs/FaqsLayout";
 
 import FeaturedLayout from "@/components/featured/FeaturedLayout"
 
@@ -26,6 +30,7 @@ export default async function HomePage() {
   const serviceData = await fetchServicesData();
   const featuredData = await fetchFeaturedData();
   const bannerData = await fetchBannerData();
+  const faqsData = await fetchFaqsData();
 
   return (
     <Fragment>
@@ -33,6 +38,7 @@ export default async function HomePage() {
       <FeaturedLayout featuredData={featuredData} />
       <ServicesLayout serviceData={serviceData} />
       <PriceLayout priceData={priceData} />
+      <FaqsLayout faqsData={faqsData} />
       <BannerLayout bannerData={bannerData} />
     </Fragment>
   );

@@ -28,6 +28,7 @@ export default function PriceLayout({ priceData }: { priceData: PriceItem[] }) {
     })
 
     const categoryKeys: Array<'semua' | 'tahun' | 'bulan'> = ['semua', 'tahun', 'bulan']
+
     const labels: Record<'semua' | 'tahun' | 'bulan', string> = {
         semua: currentLocale === 'en' ? 'All' : 'Semua',
         tahun: currentLocale === 'en' ? 'Billed annually' : 'Tagihan tahunan',

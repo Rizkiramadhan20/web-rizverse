@@ -1,7 +1,12 @@
+export interface MultilingualText {
+  id: string;
+  en: string;
+}
+
 export interface FaqItem {
   id: string;
-  title: string;
-  description: string;
+  title: MultilingualText;
+  description: MultilingualText;
 }
 
 export interface FaqsResponse {
