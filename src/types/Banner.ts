@@ -1,12 +1,17 @@
+export interface LocalizedText {
+  en: string;
+  id: string;
+}
+
 export interface BannerButton {
   href: string;
-  label: string;
+  label: LocalizedText;
 }
 
 export interface BannerItem {
   id: string;
-  title: string;
-  text: string;
+  title: LocalizedText;
+  text: LocalizedText;
   image: string;
   button: BannerButton[];
 }
