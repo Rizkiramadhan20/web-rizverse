@@ -16,6 +16,8 @@ import {
   useScrollPosition,
 } from "@/lib/useLenis";
 
+import { buildNavItems } from "@/base/layout/data/NavLinks";
+
 export const useManagementHeader = () => {
   // State management
   const [isScrolled, setIsScrolled] = useState(false);
@@ -177,39 +179,14 @@ export const useManagementHeader = () => {
     }
   };
 
-  // Navigation items configuration
-  const navItems = [
-    {
-      href: `/${currentLocale}`,
-      label: currentLocale === "en" ? "Home" : "Beranda",
-      isActive: isActiveLink(`/${currentLocale}`),
-      onClick: handleHomeNavigation,
-    },
-    {
-      href: `/${currentLocale}#featured`,
-      label: currentLocale === "en" ? "Featured" : "Fitur",
-      isActive: isActiveLink(`/${currentLocale}#featured`, true),
-      onClick: () => handleSectionNavigation("featured"),
-    },
-    {
-      href: `/${currentLocale}#services`,
-      label: currentLocale === "en" ? "Services" : "Layanan",
-      isActive: isActiveLink(`/${currentLocale}#services`, true),
-      onClick: () => handleSectionNavigation("services"),
-    },
-    {
-      href: `/${currentLocale}#pricing`,
-      label: currentLocale === "en" ? "Pricing" : "Harga",
-      isActive: isActiveLink(`/${currentLocale}#pricing`, true),
-      onClick: () => handleSectionNavigation("pricing"),
-    },
-    {
-      href: `/${currentLocale}/download`,
-      label: currentLocale === "en" ? "Download" : "Unduh",
-      isActive: isActiveLink(`/${currentLocale}/download`),
-      onClick: handleDownloadNavigation,
-    },
-  ];
+  // Navigation items configuration (moved to data/NavLinks)
+  const navItems = buildNavItems({
+    currentLocale,
+    isActiveLink,
+    handleHomeNavigation,
+    handleSectionNavigation,
+    handleDownloadNavigation,
+  });
 
   // Use Lenis scroll progress instead of window scroll
   useEffect(() => {

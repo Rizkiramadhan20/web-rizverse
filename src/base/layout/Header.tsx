@@ -10,7 +10,7 @@ import { LanguageSwitcher } from '@/components/ui/language-switcher';
 
 import { Switch } from '@/components/ui/switch';
 
-import { motion } from 'motion/react';
+import { motion, Variants } from 'motion/react';
 
 import { ThemeSwitchOverlay } from '@/context/SwitchOverlay';
 
@@ -49,6 +49,38 @@ export default function Header() {
         isLangOverlayVisible,
     } = useManagementHeader();
 
+    const desktopNavContainerVariants = {
+        hidden: {},
+        visible: {
+            transition: { staggerChildren: 0.06, delayChildren: 0.12 },
+        },
+    };
+
+    const desktopNavItemVariants = {
+        hidden: { opacity: 0, y: -8 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.35, ease: 'easeOut' },
+        },
+    };
+
+    const rightControlsContainerVariants = {
+        hidden: {},
+        visible: {
+            transition: { staggerChildren: 0.08, delayChildren: 0.15 },
+        },
+    };
+
+    const rightControlsItemVariants = {
+        hidden: { opacity: 0, x: 12 },
+        visible: {
+            opacity: 1,
+            x: 0,
+            transition: { duration: 0.35, ease: 'easeOut' },
+        },
+    };
+
     return (
         <>
             <ScrollProgressBar color="#FF5555" height={3} />
@@ -71,7 +103,15 @@ export default function Header() {
                 <div className="px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-16 lg:h-20">
                         {/* Logo */}
-                        <div className="relative cursor-pointer" onClick={navItems[0].onClick}>
+                        <motion.div
+                            className="relative cursor-pointer"
+                            onClick={navItems[0].onClick}
+                            initial={{ opacity: 0, x: -12, scale: 0.98 }}
+                            animate={{ opacity: 1, x: 0, scale: 1 }}
+                            whileHover={{ scale: 1.05, rotate: -2 }}
+                            whileTap={{ scale: 0.98 }}
+                            transition={{ duration: 1, ease: 'easeOut' }}
+                        >
                             <Image
                                 src={logo}
                                 alt="Rizverse logo"
@@ -79,31 +119,46 @@ export default function Header() {
                                 height={isScrolled ? 50 : 60}
                                 className="transition-all duration-300 group-hover:scale-105 dark:invert"
                             />
-                        </div>
+                        </motion.div>
 
                         {/* Desktop Navigation */}
-                        <nav className="hidden md:flex items-center gap-10">
+                        <motion.nav
+                            className="hidden md:flex items-center gap-10"
+                            variants={desktopNavContainerVariants}
+                            initial="hidden"
+                            animate="visible"
+                        >
                             {navItems.map((item, index) => (
-                                <button
+                                <motion.button
                                     key={index}
                                     onClick={item.onClick}
                                     className={`relative cursor-pointer font-medium transition-all duration-300 group ${item.isActive
                                         ? 'text-[#FF5555]'
                                         : 'text-foreground hover:text-[#FF5555]'
                                         }`}
+                                    variants={desktopNavItemVariants as Variants}
+                                    whileHover={{ y: -2, scale: 1.02 }}
+                                    whileTap={{ scale: 0.98 }}
                                 >
                                     {item.label}
                                     <span className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FF5555] transition-all duration-300 group-hover:w-full ${item.isActive ? 'w-full' : ''}`}></span>
-                                </button>
+                                </motion.button>
                             ))}
-                        </nav>
+                        </motion.nav>
 
-                        {/* Language Switcher, Theme Toggle and Download Button */}
-                        <div className="hidden md:flex items-center gap-4">
-                            <LanguageSwitcher onLanguageSwitch={showLanguageSwitchOverlay} />
+                        {/* Language Switcher and Theme Toggle */}
+                        <motion.div
+                            className="hidden md:flex items-center gap-4"
+                            variants={rightControlsContainerVariants}
+                            initial="hidden"
+                            animate="visible"
+                        >
+                            <motion.div variants={rightControlsItemVariants as Variants} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                                <LanguageSwitcher onLanguageSwitch={showLanguageSwitchOverlay} />
+                            </motion.div>
 
                             {mounted && (
-                                <>
+                                <motion.div variants={rightControlsItemVariants as Variants}>
                                     <Switch
                                         id="theme-toggle"
                                         checked={theme === 'dark'}
@@ -146,9 +201,9 @@ export default function Header() {
                                             )
                                         }
                                     />
-                                </>
+                                </motion.div>
                             )}
-                        </div>
+                        </motion.div>
 
                         {/* Mobile Controls - Language Switcher, Theme Toggle, and Hamburger */}
                         <div className="md:hidden flex items-center gap-3">

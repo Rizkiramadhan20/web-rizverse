@@ -54,7 +54,7 @@ export default function TextContent({ title, description, buttons }: TextContent
 
             {/* Call-to-Action Buttons */}
             <motion.div
-                className="flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center lg:justify-start items-stretch sm:items-center"
+                className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start items-stretch sm:items-center"
                 initial="hidden"
                 whileInView="show"
                 viewport={{ once: true, amount: 0.6 }}

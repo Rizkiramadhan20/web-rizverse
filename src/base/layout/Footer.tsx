@@ -47,7 +47,7 @@ export default function Footer() {
                     </div>
 
                     <div>
-                        <h4 className="mb-4 font-semibold">{currentLocale === 'en' ? 'Links' : 'Tautan'}</h4>
+                        <h3 className="mb-4 font-semibold">{currentLocale === 'en' ? 'Links' : 'Tautan'}</h3>
                         <ul className="space-y-3 text-sm">
                             {navLinks.map((link) => (
                                 <li key={link.href}>
@@ -58,7 +58,7 @@ export default function Footer() {
                     </div>
 
                     <div>
-                        <h4 className="mb-4 font-semibold">{currentLocale === 'en' ? 'Legal' : 'Hukum'}</h4>
+                        <h3 className="mb-4 font-semibold">{currentLocale === 'en' ? 'Legal' : 'Hukum'}</h3>
                         <ul className="space-y-3 text-sm">
                             <li><Link href={"/rules/terms-of-use"} className="hover:text-foreground/80">{currentLocale === 'en' ? 'Terms Of Use' : 'Ketentuan Penggunaan'}</Link></li>
                             <li><Link href={"/rules/privacy-policy"} className="hover:text-foreground/80">{currentLocale === 'en' ? 'Privacy Policy' : 'Kebijakan Privasi'}</Link></li>
@@ -67,7 +67,7 @@ export default function Footer() {
                     </div>
 
                     <div>
-                        <h4 className="mb-4 font-semibold">{currentLocale === 'en' ? 'Social' : 'Sosial'}</h4>
+                        <h3 className="mb-4 font-semibold">{currentLocale === 'en' ? 'Social' : 'Sosial'}</h3>
                         <ul className="flex flex-wrap gap-4 text-sm">
                             <li>
                                 <Link href="https://t.me/yourhandle" target="_blank" rel="noopener noreferrer" className="hover:text-foreground/80 flex items-center gap-2">

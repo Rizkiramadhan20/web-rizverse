@@ -14,6 +14,8 @@ import { ThemeProvider } from "@/context/ThemaContext";
 
 import { GoogleTagManager, GoogleTagManagerNoScript } from '@/base/analytics/GoogleTagManager'
 
+import { cookies, headers } from 'next/headers'
+
 export { metadata };
 
 interface RootLayoutProps {
@@ -27,10 +29,21 @@ export default async function RootLayout({
   children,
   params,
 }: RootLayoutProps) {
-  let locale = "id";
+  const cookieStore = await cookies();
+  const headersList = await headers();
+  const localeCookie = cookieStore.get("locale")?.value as "id" | "en" | undefined;
+  const acceptLanguage = headersList.get("accept-language") || "";
+  const firstLang = acceptLanguage.split(",")[0]?.trim().split("-")[0]?.toLowerCase();
+
+  let locale: "id" | "en" = localeCookie || (firstLang === "id" ? "id" : "en");
+
   if (params) {
-    const resolvedParams = await params;
-    locale = resolvedParams.locale;
+    try {
+      const resolvedParams = await params;
+      if (resolvedParams?.locale) {
+        locale = resolvedParams.locale as "id" | "en";
+      }
+    } catch { }
   }
 
   return (
