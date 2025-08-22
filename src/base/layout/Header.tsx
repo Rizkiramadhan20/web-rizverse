@@ -12,6 +12,8 @@ import { Switch } from '@/components/ui/switch';
 
 import { motion, Variants } from 'motion/react';
 
+import Link from "next/link"
+
 import { ThemeSwitchOverlay } from '@/context/SwitchOverlay';
 
 import { LanguageSwitchOverlay } from '@/context/SwitchOverlayLanguage';
@@ -103,23 +105,23 @@ export default function Header() {
                 <div className="px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-16 lg:h-20">
                         {/* Logo */}
-                        <motion.div
-                            className="relative cursor-pointer"
-                            onClick={navItems[0].onClick}
-                            initial={{ opacity: 0, x: -12, scale: 0.98 }}
-                            animate={{ opacity: 1, x: 0, scale: 1 }}
-                            whileHover={{ scale: 1.05, rotate: -2 }}
-                            whileTap={{ scale: 0.98 }}
-                            transition={{ duration: 1, ease: 'easeOut' }}
-                        >
-                            <Image
-                                src={logo}
-                                alt="Rizverse logo"
-                                width={isScrolled ? 50 : 60}
-                                height={isScrolled ? 50 : 60}
-                                className="transition-all duration-300 group-hover:scale-105 dark:invert"
-                            />
-                        </motion.div>
+                        <Link href={"/"} className='relative cursor-pointer'>
+                            <motion.div
+                                initial={{ opacity: 0, x: -12, scale: 0.98 }}
+                                animate={{ opacity: 1, x: 0, scale: 1 }}
+                                whileHover={{ scale: 1.05, rotate: -2 }}
+                                whileTap={{ scale: 0.98 }}
+                                transition={{ duration: 1, ease: 'easeOut' }}
+                            >
+                                <Image
+                                    src={logo}
+                                    alt="Rizverse logo"
+                                    width={isScrolled ? 50 : 60}
+                                    height={isScrolled ? 50 : 60}
+                                    className="transition-all duration-300 group-hover:scale-105 dark:invert"
+                                />
+                            </motion.div>
+                        </Link>
 
                         {/* Desktop Navigation */}
                         <motion.nav

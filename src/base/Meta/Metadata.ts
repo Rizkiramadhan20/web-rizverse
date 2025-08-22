@@ -77,7 +77,7 @@ export const metadata = {
     locale: "id_ID",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "Rizverse - Platform Anime, Donghua, Manga & Film Terdepan",
@@ -92,7 +92,7 @@ export const metadata = {
       "Rizverse adalah platform entertainment terdepan yang menghadirkan ribuan judul anime, donghua, manga, dan film berkualitas tinggi. Download aplikasi mobile dan desktop kami untuk pengalaman streaming terbaik.",
     creator: "@rizverse",
     site: "@rizverse",
-    images: ["/og-image.jpg"],
+    images: ["/og-image.png"],
   },
 
   robots: {

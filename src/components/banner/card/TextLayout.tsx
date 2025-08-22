@@ -3,11 +3,15 @@
 import React from 'react'
 
 import { motion } from 'motion/react'
+
 import Link from 'next/link'
 
 import { Button } from '@/components/ui/button'
+
 import { getLocalizedButtonText, getLocalizedText } from '@/lib/utils'
+
 import { BannerItem } from '@/types/Banner'
+
 import { useStateBanner } from '../lib/useStateBanner'
 
 type TextLayoutProps = {
@@ -53,7 +57,7 @@ export default function TextLayout({ bannerData, currentLocale }: TextLayoutProp
                     transition={{ duration: 0.4, ease: 'easeOut', delay: 0.1 }}
                     className="pt-2"
                 >
-                    <Link href={buttonContent.href} className='cursor-pointer' target="_blank" rel="noreferrer noopener">
+                    <Link href={buttonContent.href} className='cursor-pointer' rel="noreferrer noopener">
                         <Button size="lg" className="rounded-xl px-6 py-6 text-base cursor-pointer capitalize gap-2">
                             {buttonContent.label}
                             <PlatformIcon className="h-5 w-5" />
