@@ -12,6 +12,7 @@ import { motion } from 'framer-motion'
 
 export default function FaqsLayout({ faqsData }: { faqsData: FaqItem[] }) {
     const params = useParams()
+
     const currentLocale = ((params?.locale as string) || 'id') as 'id' | 'en'
 
     return (

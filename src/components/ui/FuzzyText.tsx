@@ -9,6 +9,8 @@ interface FuzzyTextProps {
     enableHover?: boolean;
     baseIntensity?: number;
     hoverIntensity?: number;
+    className?: string;
+    style?: React.CSSProperties;
 }
 
 const FuzzyText: React.FC<FuzzyTextProps> = ({
@@ -20,6 +22,8 @@ const FuzzyText: React.FC<FuzzyTextProps> = ({
     enableHover = true,
     baseIntensity = 0.18,
     hoverIntensity = 0.5,
+    className,
+    style,
 }) => {
     const canvasRef = useRef<HTMLCanvasElement & { cleanupFuzzyText?: () => void }>(null);
 
@@ -88,16 +92,32 @@ const FuzzyText: React.FC<FuzzyTextProps> = ({
             offCtx.fillStyle = color;
             offCtx.fillText(text, xOffset - actualLeft, actualAscent);
 
-            const horizontalMargin = 50;
+            const horizontalMargin = Math.max(16, Math.round(numericFontSize * 0.25));
             const verticalMargin = 0;
-            canvas.width = offscreenWidth + horizontalMargin * 2;
-            canvas.height = tightHeight + verticalMargin * 2;
+
+            const dpr = window.devicePixelRatio || 1;
+            const idealWidth = offscreenWidth + horizontalMargin * 2;
+            const idealHeight = tightHeight + verticalMargin * 2;
+
+            // Respect container width if available
+            const containerWidth = canvas.clientWidth || idealWidth;
+            const scale = Math.max(0.1, Math.min(2, containerWidth / idealWidth));
+            const cssWidth = containerWidth;
+            const cssHeight = Math.ceil(idealHeight * scale);
+
+            canvas.width = Math.floor(cssWidth * dpr);
+            canvas.height = Math.floor(cssHeight * dpr);
+            // Set only height to preserve aspect; width is controlled by container
+            canvas.style.height = `${cssHeight}px`;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            ctx.scale(scale, scale);
             ctx.translate(horizontalMargin, verticalMargin);
 
-            const interactiveLeft = horizontalMargin + xOffset;
-            const interactiveTop = verticalMargin;
-            const interactiveRight = interactiveLeft + textBoundingWidth;
-            const interactiveBottom = interactiveTop + tightHeight;
+            // Interactive bounds in CSS pixel space
+            const interactiveLeft = (horizontalMargin + xOffset) * scale;
+            const interactiveTop = (verticalMargin) * scale;
+            const interactiveRight = interactiveLeft + textBoundingWidth * scale;
+            const interactiveBottom = interactiveTop + tightHeight * scale;
 
             let isHovering = false;
             const fuzzRange = 30;
@@ -179,9 +199,24 @@ const FuzzyText: React.FC<FuzzyTextProps> = ({
                     canvas.removeEventListener("touchmove", handleTouchMove);
                     canvas.removeEventListener("touchend", handleTouchEnd);
                 }
+                window.removeEventListener("resize", handleResize);
+                resizeObserver?.disconnect();
             };
 
             canvas.cleanupFuzzyText = cleanup;
+            const handleResize = () => {
+                if (isCancelled) return;
+                cleanup();
+                // Re-run initialization to adapt to new size
+                init();
+            };
+            window.addEventListener("resize", handleResize);
+
+            // Observe container size changes for responsive redraw
+            const resizeObserver = new ResizeObserver(() => {
+                handleResize();
+            });
+            resizeObserver.observe(canvas);
         };
 
         init();
@@ -204,7 +239,13 @@ const FuzzyText: React.FC<FuzzyTextProps> = ({
         hoverIntensity,
     ]);
 
-    return <canvas ref={canvasRef} />;
+    return (
+        <canvas
+            ref={canvasRef}
+            className={className}
+            style={{ display: "block", ...style }}
+        />
+    );
 };
 
 export default FuzzyText;
