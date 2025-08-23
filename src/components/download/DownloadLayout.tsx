@@ -41,7 +41,6 @@ export default function DownloadLayout({ downloadData, preferredPlatform }: { do
         platformMetaByKey,
         selectedItem,
         selectedPlatformLabel,
-        handleDownload
     } = useManagementDownload(downloadData, preferredPlatform)
 
     // Icon mapping for rendering
@@ -105,10 +104,7 @@ export default function DownloadLayout({ downloadData, preferredPlatform }: { do
                             <Button
                                 size="lg"
                                 className="px-6 cursor-pointer"
-                                onClick={() => handleDownload(
-                                    selectedItem.file,
-                                    `rizverse-${selectedItem.type}-${selectedItem.version}`
-                                )}
+                                onClick={() => window.open(selectedItem.file, "_blank")}
                             >
                                 {(() => {
                                     const meta = platformMetaByKey[(selectedItem.type as PlatformKey) || 'windows']
@@ -193,10 +189,7 @@ export default function DownloadLayout({ downloadData, preferredPlatform }: { do
                                                                         items.map((item) => (
                                                                             <button
                                                                                 key={item.id}
-                                                                                onClick={() => handleDownload(
-                                                                                    item.file,
-                                                                                    `rizverse-${item.type}-${item.version}`
-                                                                                )}
+                                                                                onClick={() => window.open(item.file, "_blank")}
                                                                                 className="flex items-center justify-between p-4 text-sm hover:bg-muted/50 w-full text-left cursor-pointer"
                                                                             >
                                                                                 <span>{label} – {version}</span>

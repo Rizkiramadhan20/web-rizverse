@@ -82,96 +82,6 @@ export const useManagementDownload = (
     [selectedItem, platformMetaByKey]
   );
 
-  // Download file function
-  const downloadFile = async (url: string, filename?: string) => {
-    try {
-      // For Google Drive links, we need to handle them differently
-      if (url.includes("drive.google.com")) {
-        // Extract file ID and create a direct download link
-        const fileId = url.match(/\/d\/([a-zA-Z0-9-_]+)/)?.[1];
-        if (fileId) {
-          // Create a temporary link element for direct download
-          const link = document.createElement("a");
-          link.href = `https://drive.google.com/uc?export=download&id=${fileId}`;
-          link.download = filename || "rizverse-download";
-          link.target = "_blank";
-          link.rel = "noopener noreferrer";
-
-          // Add to DOM, click, and remove
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          return;
-        }
-      }
-
-      // For other URLs, try to fetch and download
-      const response = await fetch(url, {
-        method: "GET",
-        mode: "cors",
-        credentials: "omit",
-      });
-
-      if (!response.ok) {
-        throw new Error(`Download failed: ${response.status}`);
-      }
-
-      const blob = await response.blob();
-      const downloadUrl = window.URL.createObjectURL(blob);
-
-      const link = document.createElement("a");
-      link.href = downloadUrl;
-      link.download = filename || "rizverse-download";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-
-      window.URL.revokeObjectURL(downloadUrl);
-    } catch (error) {
-      console.error("Download error:", error);
-
-      // For Google Drive, always fallback to direct link
-      if (url.includes("drive.google.com")) {
-        const fileId = url.match(/\/d\/([a-zA-Z0-9-_]+)/)?.[1];
-        if (fileId) {
-          const directDownloadUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
-          window.open(directDownloadUrl, "_blank");
-          return;
-        }
-      }
-
-      // Fallback: open in new tab if direct download fails
-      window.open(url, "_blank");
-    }
-  };
-
-  // Handle download function
-  const handleDownload = (url: string, filename?: string) => {
-    if (url.includes("drive.google.com")) {
-      // For Google Drive, extract file ID and create direct download
-      const fileId = url.match(/\/d\/([a-zA-Z0-9-_]+)/)?.[1];
-      if (fileId) {
-        // Create a temporary link element for direct download
-        const link = document.createElement("a");
-        link.href = `https://drive.google.com/uc?export=download&id=${fileId}`;
-        link.download = filename || "rizverse-download";
-        link.target = "_blank";
-        link.rel = "noopener noreferrer";
-
-        // Add to DOM, click, and remove
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      } else {
-        // Fallback to opening in new tab
-        window.open(url, "_blank");
-      }
-    } else {
-      // For other URLs, try direct download
-      downloadFile(url, filename);
-    }
-  };
-
   return {
     platforms,
     groupedByVersion,
@@ -181,7 +91,5 @@ export const useManagementDownload = (
     platformMetaByKey,
     selectedItem,
     selectedPlatformLabel,
-    handleDownload,
-    downloadFile,
   };
 };
