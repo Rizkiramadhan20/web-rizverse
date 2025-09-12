@@ -4,8 +4,7 @@ const BASE_URL =
     ? `https://${process.env.VERCEL_URL}`
     : "https://rizverse.my.id");
 
-// Revalidate robots.txt periodically
-export const revalidate = 3600; // seconds
+export const revalidate = 3600; // 1 hour
 
 export async function GET() {
   const robotsTxt = `# Rizverse Robots.txt
@@ -14,6 +13,8 @@ User-agent: *
 Allow: /
 
 # Disallow admin and private areas
+Disallow: /admin/
+Disallow: /api/
 Disallow: /_next/
 Disallow: /private/
 
