@@ -14,22 +14,11 @@ User-agent: *
 Allow: /
 
 # Disallow admin and private areas
-Disallow: /admin/
-Disallow: /api/
 Disallow: /_next/
 Disallow: /private/
 
 # Sitemap location
 Sitemap: ${BASE_URL}/sitemap.xml
-
-# Crawl-delay for respectful crawling
-Crawl-delay: 1
-
-# Additional sitemaps for different content types
-Sitemap: ${BASE_URL}/sitemap.xml
-
-# Host
-Host: ${BASE_URL}
 `;
 
   return new Response(robotsTxt, {
