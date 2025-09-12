@@ -1,3 +1,4 @@
+import { NextResponse } from "next/server";
 import { fetchDownloadData } from "@/utils/FetchDownload";
 import { DownloadItem } from "@/types/Download";
 
@@ -12,12 +13,18 @@ const BASE_URL = (() => {
   return "https://rizverse.com";
 })();
 
+type UrlEntry = {
+  url: string;
+  lastModified: string;
+  changeFrequency: string;
+  priority: number;
+};
+
 async function getDownloadVersions(): Promise<
   Array<{ version: string; updatedAt: Date }>
 > {
   try {
     const downloads: DownloadItem[] = await fetchDownloadData();
-    // Get unique versions and their latest creation dates
     const versionMap = new Map<string, Date>();
     downloads.forEach((download) => {
       if (download.version && download.createdAt) {
@@ -39,13 +46,36 @@ async function getDownloadVersions(): Promise<
   }
 }
 
-export default async function sitemap() {
+function toXml(urls: UrlEntry[]): string {
+  const urlset = urls
+    .map((entry) => {
+      return (
+        `<url>` +
+        `<loc>${entry.url}</loc>` +
+        `<lastmod>${entry.lastModified}</lastmod>` +
+        `<changefreq>${entry.changeFrequency}</changefreq>` +
+        `<priority>${entry.priority.toFixed(1)}</priority>` +
+        `</url>`
+      );
+    })
+    .join("");
+
+  return (
+    `<?xml version="1.0" encoding="UTF-8"?>` +
+    `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">` +
+    urlset +
+    `</urlset>`
+  );
+}
+
+export const revalidate = 3600; // 1 hour
+
+export async function GET() {
   try {
     const downloadVersions = await getDownloadVersions();
     const currentDate = new Date().toISOString();
 
-    // Static pages without locale
-    const staticUrls = [
+    const staticUrls: UrlEntry[] = [
       {
         url: `${BASE_URL}`,
         lastModified: currentDate,
@@ -78,8 +108,7 @@ export default async function sitemap() {
       },
     ];
 
-    // Dynamic download version URLs without locale
-    const dynamicUrls = downloadVersions.map(
+    const dynamicUrls: UrlEntry[] = downloadVersions.map(
       (download: { version: string; updatedAt: Date }) => ({
         url: `${BASE_URL}/download?version=${download.version}`,
         lastModified: download.updatedAt.toISOString(),
@@ -88,13 +117,18 @@ export default async function sitemap() {
       })
     );
 
-    const urls = [...staticUrls, ...dynamicUrls];
-
-    return urls;
+    const urls: UrlEntry[] = [...staticUrls, ...dynamicUrls];
+    const xml = toXml(urls);
+    return new NextResponse(xml, {
+      status: 200,
+      headers: {
+        "Content-Type": "application/xml",
+        "Cache-Control": `public, s-maxage=${revalidate}, stale-while-revalidate=${revalidate}`,
+      },
+    });
   } catch (error) {
     console.error("Error generating sitemap:", error);
-    // Return minimal valid sitemap if there's an error
-    return [
+    const fallback: UrlEntry[] = [
       {
         url: BASE_URL,
         lastModified: new Date().toISOString(),
@@ -102,5 +136,10 @@ export default async function sitemap() {
         priority: 1.0,
       },
     ];
+    const xml = toXml(fallback);
+    return new NextResponse(xml, {
+      status: 200,
+      headers: { "Content-Type": "application/xml" },
+    });
   }
 }
