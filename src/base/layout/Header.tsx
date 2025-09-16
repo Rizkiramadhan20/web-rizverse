@@ -11,6 +11,12 @@ import { LanguageSwitcher } from '@/components/ui/language-switcher';
 import { Switch } from '@/components/ui/switch';
 
 import { motion, Variants } from 'motion/react';
+import {
+    desktopNavContainerVariants,
+    desktopNavItemVariants,
+    rightControlsContainerVariants,
+    rightControlsItemVariants,
+} from '@/base/layout/animation/animation'
 
 import Link from "next/link"
 
@@ -51,37 +57,7 @@ export default function Header() {
         isLangOverlayVisible,
     } = useManagementHeader();
 
-    const desktopNavContainerVariants = {
-        hidden: {},
-        visible: {
-            transition: { staggerChildren: 0.06, delayChildren: 0.12 },
-        },
-    };
 
-    const desktopNavItemVariants = {
-        hidden: { opacity: 0, y: -8 },
-        visible: {
-            opacity: 1,
-            y: 0,
-            transition: { duration: 0.35, ease: 'easeOut' },
-        },
-    };
-
-    const rightControlsContainerVariants = {
-        hidden: {},
-        visible: {
-            transition: { staggerChildren: 0.08, delayChildren: 0.15 },
-        },
-    };
-
-    const rightControlsItemVariants = {
-        hidden: { opacity: 0, x: 12 },
-        visible: {
-            opacity: 1,
-            x: 0,
-            transition: { duration: 0.35, ease: 'easeOut' },
-        },
-    };
 
     return (
         <>
@@ -125,27 +101,33 @@ export default function Header() {
 
                         {/* Desktop Navigation */}
                         <motion.nav
-                            className="hidden md:flex items-center gap-10"
+                            aria-label="Primary"
                             variants={desktopNavContainerVariants}
                             initial="hidden"
                             animate="visible"
                         >
-                            {navItems.map((item, index) => (
-                                <motion.button
-                                    key={index}
-                                    onClick={item.onClick}
-                                    className={`relative cursor-pointer font-medium transition-all duration-300 group ${item.isActive
-                                        ? 'text-[#FF5555]'
-                                        : 'text-foreground hover:text-[#FF5555]'
-                                        }`}
-                                    variants={desktopNavItemVariants as Variants}
-                                    whileHover={{ y: -2, scale: 1.02 }}
-                                    whileTap={{ scale: 0.98 }}
-                                >
-                                    {item.label}
-                                    <span className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FF5555] transition-all duration-300 group-hover:w-full ${item.isActive ? 'w-full' : ''}`}></span>
-                                </motion.button>
-                            ))}
+                            <ul className="hidden md:flex items-center gap-10">
+                                {navItems.map((item, index) => (
+                                    <motion.li
+                                        key={index}
+                                        variants={desktopNavItemVariants as Variants}
+                                        whileHover={{ y: -2, scale: 1.02 }}
+                                        whileTap={{ scale: 0.98 }}
+                                    >
+                                        <Link
+                                            href={item.href}
+                                            onClick={item.onClick}
+                                            className={`relative cursor-pointer font-medium transition-all duration-300 group ${item.isActive
+                                                ? 'text-[#FF5555]'
+                                                : 'text-foreground hover:text-[#FF5555]'
+                                                }`}
+                                        >
+                                            {item.label}
+                                            <span className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FF5555] transition-all duration-300 group-hover:w-full ${item.isActive ? 'w-full' : ''}`}></span>
+                                        </Link>
+                                    </motion.li>
+                                ))}
+                            </ul>
                         </motion.nav>
 
                         {/* Language Switcher and Theme Toggle */}
@@ -295,22 +277,26 @@ export default function Header() {
                     {/* Mobile Menu */}
                     <div className={`md:hidden transition-all duration-300 overflow-hidden ${isMobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
                         }`}>
-                        <nav className="py-4 space-y-3 border-t border-border">
-                            {navItems.map((item, index) => (
-                                <button
-                                    key={index}
-                                    onClick={() => {
-                                        item.onClick();
-                                        closeMobileMenu();
-                                    }}
-                                    className={`block w-full text-left py-2 px-4 rounded-lg font-medium transition-all duration-200 ${item.isActive
-                                        ? 'text-[#FF5555] bg-red-50 dark:bg-red-950/20'
-                                        : 'text-foreground hover:text-[#FF5555] hover:bg-accent'
-                                        }`}
-                                >
-                                    {item.label}
-                                </button>
-                            ))}
+                        <nav className="py-4 border-t border-border" aria-label="Mobile Primary">
+                            <ul className="space-y-3">
+                                {navItems.map((item, index) => (
+                                    <li key={index}>
+                                        <Link
+                                            href={item.href}
+                                            onClick={() => {
+                                                item.onClick();
+                                                closeMobileMenu();
+                                            }}
+                                            className={`block w-full py-2 px-4 rounded-lg font-medium transition-all duration-200 ${item.isActive
+                                                ? 'text-[#FF5555] bg-red-50 dark:bg-red-950/20'
+                                                : 'text-foreground hover:text-[#FF5555] hover:bg-accent'
+                                                }`}
+                                        >
+                                            {item.label}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
                         </nav>
                     </div>
                 </div>

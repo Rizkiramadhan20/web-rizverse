@@ -10,14 +10,6 @@ import SplitText from '@/components/ui/SplitText'
 
 import { ArrowRight, Play } from 'lucide-react'
 
-type LocalizedButton = { label: string; href: string }
-
-interface TextContentProps {
-    title: string
-    description: string
-    buttons: LocalizedButton[]
-}
-
 export default function TextContent({ title, description, buttons }: TextContentProps) {
     return (
         <div className="space-y-6 md:space-y-8 text-center lg:text-left">

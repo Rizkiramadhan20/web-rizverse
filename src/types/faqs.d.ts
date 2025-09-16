@@ -1,15 +1,15 @@
-export interface MultilingualText {
+interface MultilingualText {
   id: string;
   en: string;
 }
 
-export interface FaqItem {
+interface FaqItem {
   id: string;
   title: MultilingualText;
   description: MultilingualText;
 }
 
-export interface FaqsResponse {
+interface FaqsResponse {
   statusCode: number;
   statusMessage: string;
   message: string;

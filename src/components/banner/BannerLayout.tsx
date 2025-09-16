@@ -2,8 +2,6 @@
 
 import React from 'react'
 
-import { BannerItem } from '@/types/Banner'
-
 import { useParams } from 'next/navigation';
 
 import TextLayout from '@/components/banner/card/TextLayout';

@@ -1,4 +1,4 @@
-export interface DownloadItem {
+interface DownloadItem {
   id: string;
   version: string;
   file: string;
@@ -6,7 +6,7 @@ export interface DownloadItem {
   createdAt: string;
 }
 
-export interface DownloadResponse {
+interface DownloadResponse {
   statusCode: number;
   statusMessage: string;
   message: string;

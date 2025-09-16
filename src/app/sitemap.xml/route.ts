@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 
 import { fetchDownloadData } from "@/utils/FetchDownload";
 
-import { DownloadItem } from "@/types/Download";
-
 const BASE_URL =
   process.env.NEXT_PUBLIC_URL as string;
 

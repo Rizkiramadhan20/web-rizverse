@@ -4,30 +4,21 @@ import React from 'react'
 
 import Image from 'next/image'
 
-import { ServiceItem } from "@/types/Services"
-
 import { getLocalizedText } from '@/lib/utils'
 
 import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card"
+
 import { motion } from 'motion/react'
 
-type ServiceCardProps = {
-    item: ServiceItem
-    locale: 'id' | 'en'
-}
+import { serviceItemVariants } from '@/base/layout/animation/animation'
 
 export default function ServiceCard({ item, locale }: ServiceCardProps) {
     const localizedTitle = getLocalizedText(item.title, locale)
     const localizedDescription = getLocalizedText(item.description, locale)
 
-    const itemVariants = {
-        hidden: { opacity: 0, y: 24 },
-        show: { opacity: 1, y: 0 }
-    }
-
     return (
         <motion.div
-            variants={itemVariants}
+            variants={serviceItemVariants}
             whileHover={{ y: -6 }}
             whileTap={{ scale: 0.98 }}
             transition={{ type: 'spring', stiffness: 300, damping: 24 }}

@@ -1,5 +1,3 @@
-import { DownloadItem, DownloadResponse } from "@/types/Download";
-
 export const fetchDownloadData = async (): Promise<DownloadItem[]> => {
   try {
     if (!`${process.env.NEXT_PUBLIC_API as string}/download`) {

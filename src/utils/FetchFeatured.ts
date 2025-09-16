@@ -1,5 +1,3 @@
-import { FeaturedItem, FeaturedResponse } from "@/types/Featured";
-
 export const fetchFeaturedData = async (): Promise<FeaturedItem> => {
   try {
     if (!`${process.env.NEXT_PUBLIC_API as string}/featured`) {

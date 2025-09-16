@@ -4,8 +4,6 @@ import React from 'react'
 
 import Image from 'next/image'
 
-import { HomeItem } from "@/types/Home";
-
 import TextContent from '@/components/home/card/TextContent';
 
 import { motion } from 'motion/react';

@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { DownloadItem } from "@/types/Download";
 
 type PlatformKey = "android" | "ios" | "macos" | "windows";
 
@@ -77,7 +76,7 @@ export const useManagementDownload = (
     () =>
       selectedItem
         ? platformMetaByKey[(selectedItem.type as PlatformKey) || "windows"]
-            ?.label
+          ?.label
         : undefined,
     [selectedItem, platformMetaByKey]
   );

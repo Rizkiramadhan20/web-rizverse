@@ -1,5 +1,3 @@
-import { ServiceItem, ServicesResponse } from "@/types/Services";
-
 export const fetchServicesData = async (): Promise<ServiceItem[]> => {
   try {
     if (!`${process.env.NEXT_PUBLIC_API as string}/services`) {

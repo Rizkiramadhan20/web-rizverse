@@ -1,5 +1,3 @@
-import { FaqItem, FaqsResponse } from "@/types/Faqs";
-
 export const fetchFaqsData = async (): Promise<FaqItem[]> => {
   try {
     if (!`${process.env.NEXT_PUBLIC_API as string}/faqs`) {

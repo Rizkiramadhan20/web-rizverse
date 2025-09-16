@@ -6,15 +6,7 @@ import { motion } from 'motion/react'
 
 import { Check } from "lucide-react"
 
-import { PriceItem } from '@/types/Price'
-
 import { Card, CardHeader, CardTitle, CardAction, CardContent } from '@/components/ui/card'
-
-interface PriceCardProps {
-    item: PriceItem
-    index: number
-    currentLocale: 'id' | 'en'
-}
 
 export default function PriceCard({ item, index, currentLocale }: PriceCardProps) {
     const formatPrice = (value?: string | null) => {

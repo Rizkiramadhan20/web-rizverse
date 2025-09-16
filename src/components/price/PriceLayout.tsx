@@ -4,8 +4,6 @@ import React, { useState } from 'react'
 
 import { useParams } from 'next/navigation'
 
-import { PriceItem } from '@/types/Price'
-
 import { motion } from 'motion/react'
 
 import PriceCard from '@/components/price/card/PriceCard'

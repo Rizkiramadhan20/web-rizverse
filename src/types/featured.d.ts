@@ -1,16 +1,16 @@
-export type Locale = "id" | "en";
+type Locale = "id" | "en";
 
-export interface TranslatedText {
+interface TranslatedText {
   id: string;
   en: string;
 }
 
-export interface FeatureEntry {
+interface FeatureEntry {
   title: TranslatedText;
   description: TranslatedText;
 }
 
-export interface FeaturedItem {
+interface FeaturedItem {
   id: string;
   title: TranslatedText;
   text: TranslatedText;
@@ -18,10 +18,20 @@ export interface FeaturedItem {
   features: FeatureEntry[];
 }
 
-export interface FeaturedResponse {
+interface FeaturedResponse {
   statusCode: number;
   statusMessage: string;
   message: string;
   ok: boolean;
   data: FeaturedItem[];
+}
+
+type ImageFeaturdProps = {
+  featuredData: FeaturedItem
+  currentLocale: 'id' | 'en'
+}
+
+type TextFeaturedProps = {
+  featuredData: FeaturedItem
+  currentLocale: 'id' | 'en'
 }

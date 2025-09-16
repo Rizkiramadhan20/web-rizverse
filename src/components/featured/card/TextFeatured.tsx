@@ -3,14 +3,10 @@
 import React from 'react'
 
 import { motion } from 'motion/react'
-import { FeaturedItem } from '@/types/Featured'
-import { getLocalizedText } from '@/lib/utils'
-import { Sparkles, BadgeCheck, ShieldCheck } from 'lucide-react'
 
-type TextFeaturedProps = {
-    featuredData: FeaturedItem
-    currentLocale: 'id' | 'en'
-}
+import { getLocalizedText } from '@/lib/utils'
+
+import { Sparkles, BadgeCheck, ShieldCheck } from 'lucide-react'
 
 export default function TextFeatured({ featuredData, currentLocale }: TextFeaturedProps) {
     return (

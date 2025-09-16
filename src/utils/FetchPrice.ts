@@ -1,5 +1,3 @@
-import { PriceItem, PriceResponse } from "@/types/Price";
-
 export const fetchPriceData = async (): Promise<PriceItem[]> => {
   try {
     if (!`${process.env.NEXT_PUBLIC_API as string}/price`) {

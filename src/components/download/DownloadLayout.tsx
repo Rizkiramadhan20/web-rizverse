@@ -12,8 +12,6 @@ import { Monitor, Smartphone, Apple, Laptop, Download as DownloadIcon } from 'lu
 
 import logo from '@/base/assets/logo.png'
 
-import { DownloadItem } from "@/types/Download"
-
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 
 import BlurText from "@/components/ui/BlurText"

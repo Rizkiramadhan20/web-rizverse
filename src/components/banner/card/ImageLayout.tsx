@@ -3,15 +3,12 @@
 import React from 'react'
 
 import { ScrollReveal } from '@/components/ui/ScrollReveal'
-import { motion } from 'motion/react'
-import Image from 'next/image'
-import { BannerItem } from '@/types/Banner'
-import { getLocalizedText } from '@/lib/utils'
 
-type ImageLayoutProps = {
-    bannerData: BannerItem
-    currentLocale: 'id' | 'en'
-}
+import { motion } from 'motion/react'
+
+import Image from 'next/image'
+
+import { getLocalizedText } from '@/lib/utils'
 
 export default function ImageLayout({ bannerData, currentLocale }: ImageLayoutProps) {
     return (

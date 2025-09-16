@@ -1,5 +1,3 @@
-import { BannerItem, BannerResponse } from "@/types/Banner";
-
 export const fetchBannerData = async (): Promise<BannerItem> => {
   try {
     if (!`${process.env.NEXT_PUBLIC_API as string}/banner`) {

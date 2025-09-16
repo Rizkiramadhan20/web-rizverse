@@ -2,8 +2,6 @@
 
 import React from 'react'
 
-import { FaqItem } from '@/types/Faqs'
-
 import { useParams } from 'next/navigation'
 
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion'

@@ -1,14 +1,14 @@
-export interface LocalizedText {
+interface LocalizedText {
   en: string;
   id: string;
 }
 
-export interface BannerButton {
+interface BannerButton {
   href: string;
   label: LocalizedText;
 }
 
-export interface BannerItem {
+interface BannerItem {
   id: string;
   title: LocalizedText;
   text: LocalizedText;
@@ -16,10 +16,20 @@ export interface BannerItem {
   button: BannerButton[];
 }
 
-export interface BannerResponse {
+interface BannerResponse {
   statusCode: number;
   statusMessage: string;
   message: string;
   ok: boolean;
   data: BannerItem[];
+}
+
+type ImageLayoutProps = {
+  bannerData: BannerItem
+  currentLocale: 'id' | 'en'
+}
+
+type TextLayoutProps = {
+  bannerData: BannerItem
+  currentLocale: 'id' | 'en'
 }

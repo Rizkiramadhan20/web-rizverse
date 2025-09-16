@@ -2,8 +2,6 @@
 
 import React from 'react'
 
-import { FeaturedItem } from "@/types/Featured";
-
 import { useParams } from 'next/navigation';
 
 import ImageFeaturd from '@/components/featured/card/ImageFeaturd';

@@ -3,15 +3,12 @@
 import React from 'react'
 
 import { ScrollReveal } from '@/components/ui/ScrollReveal'
-import { motion } from 'motion/react'
-import Image from 'next/image'
-import { FeaturedItem } from '@/types/Featured'
-import { getLocalizedText } from '@/lib/utils'
 
-type ImageFeaturdProps = {
-    featuredData: FeaturedItem
-    currentLocale: 'id' | 'en'
-}
+import { motion } from 'motion/react'
+
+import Image from 'next/image'
+
+import { getLocalizedText } from '@/lib/utils'
 
 export default function ImageFeaturd({ featuredData, currentLocale }: ImageFeaturdProps) {
     return (

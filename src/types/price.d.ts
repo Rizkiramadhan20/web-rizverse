@@ -1,13 +1,13 @@
-export interface LocalizedText {
+interface LocalizedText {
   en: string;
   id: string;
 }
 
-export interface PriceListItem {
+interface PriceListItem {
   title: LocalizedText;
 }
 
-export interface PriceItem {
+interface PriceItem {
   id: string;
   title: LocalizedText;
   originalPrice: string;
@@ -17,10 +17,17 @@ export interface PriceItem {
   paket_up?: string;
 }
 
-export interface PriceResponse {
+interface PriceResponse {
   statusCode: number;
   statusMessage: string;
   message: string;
   ok: boolean;
   data: PriceItem[];
+}
+
+
+interface PriceCardProps {
+  item: PriceItem
+  index: number
+  currentLocale: 'id' | 'en'
 }

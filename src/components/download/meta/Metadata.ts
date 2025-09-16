@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-const BASE_URL = process.env.NEXT_PUBLIC_URL || "http://rizverse.my.id";
+const BASE_URL = process.env.NEXT_PUBLIC_URL;
 
 export const metadata: Metadata = {
   title: "Unduh Rizverse - Download Aplikasi Anime, Donghua, Manga & Film",

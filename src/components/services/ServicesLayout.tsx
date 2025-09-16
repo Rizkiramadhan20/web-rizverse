@@ -2,8 +2,6 @@
 
 import React from 'react'
 
-import { ServiceItem } from "@/types/Services";
-
 import { useParams } from 'next/navigation';
 
 import ServiceCard from "@/components/services/card/ServiceCard";
@@ -13,35 +11,18 @@ import TrueFocus from "@/components/ui/TrueFocus";
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
 
 import { motion } from 'motion/react'
+import {
+    servicesContainerVariants,
+    servicesHeaderContainer,
+    fadeUp,
+} from '@/base/layout/animation/animation'
 
 export default function ServicesLayout({ serviceData }: { serviceData: ServiceItem[] }) {
     const params = useParams();
 
     const currentLocale = ((params?.locale as string) || 'id') as 'id' | 'en';
 
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        show: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.12,
-                delayChildren: 0.1,
-            }
-        }
-    }
 
-    const headerContainer = {
-        hidden: { opacity: 0 },
-        show: {
-            opacity: 1,
-            transition: { staggerChildren: 0.1, delayChildren: 0.05 }
-        }
-    }
-
-    const fadeUp = {
-        hidden: { opacity: 0, y: 12 },
-        show: { opacity: 1, y: 0 }
-    }
 
     return (
         <section id="services" className="relative pt-20 md:py-10 overflow-hidden bg-background">
@@ -52,7 +33,7 @@ export default function ServicesLayout({ serviceData }: { serviceData: ServiceIt
                         initial="hidden"
                         whileInView="show"
                         viewport={{ once: true, amount: 0.3 }}
-                        variants={headerContainer}
+                        variants={servicesHeaderContainer}
                     >
                         <motion.div variants={fadeUp}>
                             <TrueFocus
@@ -74,7 +55,7 @@ export default function ServicesLayout({ serviceData }: { serviceData: ServiceIt
                         initial="hidden"
                         whileInView="show"
                         viewport={{ once: true, amount: 0.2 }}
-                        variants={containerVariants}
+                        variants={servicesContainerVariants}
                     >
                         {serviceData?.map((item, index) => (
                             <ServiceCard item={item} key={index} locale={currentLocale} />

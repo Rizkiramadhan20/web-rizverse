@@ -10,14 +10,7 @@ import { Button } from '@/components/ui/button'
 
 import { getLocalizedButtonText, getLocalizedText } from '@/lib/utils'
 
-import { BannerItem } from '@/types/Banner'
-
-import { useStateBanner } from '../lib/useStateBanner'
-
-type TextLayoutProps = {
-    bannerData: BannerItem
-    currentLocale: 'id' | 'en'
-}
+import { useStateBanner } from '@/components/banner/lib/useStateBanner'
 
 export default function TextLayout({ bannerData, currentLocale }: TextLayoutProps) {
     const primaryButton = bannerData.button?.[0]

@@ -1,5 +1,3 @@
-import { HomeItem, HomeResponse } from "@/types/Home";
-
 export const fetchHomeData = async (): Promise<HomeItem> => {
   try {
     if (!`${process.env.NEXT_PUBLIC_API as string}/home`) {
