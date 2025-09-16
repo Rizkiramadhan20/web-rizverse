@@ -67,6 +67,10 @@ export const metadata = {
     "msapplication-TileColor": "#f5f5f5",
   },
 
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION as string,
+  },
+
   openGraph: {
     type: "website",
     title: "Rizverse - Platform Anime, Donghua, Manga & Film Terdepan",
