@@ -1,8 +1,4 @@
-const BASE_URL =
-  process.env.NEXT_PUBLIC_URL ||
-  (process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : "https://rizverse.my.id");
+const BASE_URL = process.env.NEXT_PUBLIC_URL as string;
 
 export const revalidate = 3600; // 1 hour
 

@@ -1,12 +1,11 @@
 import { NextResponse } from "next/server";
+
 import { fetchDownloadData } from "@/utils/FetchDownload";
+
 import { DownloadItem } from "@/types/Download";
 
 const BASE_URL =
-  process.env.NEXT_PUBLIC_URL ||
-  (process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : "https://rizverse.my.id");
+  process.env.NEXT_PUBLIC_URL as string;
 
 type UrlEntry = {
   url: string;
