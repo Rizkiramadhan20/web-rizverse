@@ -16,6 +16,7 @@ export const metadata = {
   authors: [{ name: "Rizverse" }],
 
   keywords: [
+    "rizverse",
     "Rizverse",
     "Anime Platform",
     "Donghua Streaming",

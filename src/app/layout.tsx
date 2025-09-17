@@ -18,6 +18,8 @@ import { cookies, headers } from 'next/headers'
 
 export { metadata };
 
+import Script from "next/script";
+
 interface RootLayoutProps {
   children: React.ReactNode;
   params?: Promise<{
@@ -54,6 +56,30 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Script
+          id="breadcrumb-schema"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": locale === "id" ? "Beranda" : "Home",
+                  "item": "https://rizverse.my.id"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": locale === "id" ? "Unduh" : "Download",
+                  "item": "https://rizverse.my.id/download"
+                }
+              ]
+            }),
+          }}
+        />
         <GoogleTagManagerNoScript />
         <ThemeProvider
           attribute="class"
