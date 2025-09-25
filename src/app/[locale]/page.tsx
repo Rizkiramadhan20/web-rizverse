@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import { Fragment } from "react";
 
 import { fetchHomeData } from "@/utils/FetchHome";

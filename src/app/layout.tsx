@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import { metadata } from "@/base/Meta/Metadata";
 
 import { geistSans, geistMono } from "@/base/Fonts/Fonts";

@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import React from 'react'
 
 export { metadata } from '@/components/rules/cokies-policy/meta/Metadata'
