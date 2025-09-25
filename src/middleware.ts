@@ -32,8 +32,11 @@ export function middleware(request: NextRequest) {
   }
 
   // 2. Ambil data lokasi & bahasa
+  // Cloudflare sets `cf-ipcountry`; Vercel sets `x-vercel-ip-country`
   const country = (
-    request.headers.get("x-vercel-ip-country") || ""
+    request.headers.get("cf-ipcountry") ||
+    request.headers.get("x-vercel-ip-country") ||
+    ""
   ).toLowerCase();
   const acceptLanguage = request.headers.get("accept-language") || "";
   const firstLang = acceptLanguage
