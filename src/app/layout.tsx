@@ -1,5 +1,3 @@
-export const runtime = 'edge';
-
 import { metadata } from "@/base/Meta/Metadata";
 
 import { geistSans, geistMono } from "@/base/Fonts/Fonts";
@@ -21,7 +19,6 @@ import { cookies, headers } from 'next/headers'
 export { metadata };
 
 import Script from "next/script";
-
 interface RootLayoutProps {
   children: React.ReactNode;
   params?: Promise<{
@@ -50,6 +47,14 @@ export default async function RootLayout({
     } catch { }
   }
 
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": locale === "id" ? "Beranda" : "Home", "item": "https://rizverse.my.id" },
+    ]
+  }
+
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
@@ -62,24 +67,7 @@ export default async function RootLayout({
           id="breadcrumb-schema"
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "BreadcrumbList",
-              "itemListElement": [
-                {
-                  "@type": "ListItem",
-                  "position": 1,
-                  "name": locale === "id" ? "Beranda" : "Home",
-                  "item": "https://rizverse.my.id"
-                },
-                {
-                  "@type": "ListItem",
-                  "position": 2,
-                  "name": locale === "id" ? "Unduh" : "Download",
-                  "item": "https://rizverse.my.id/download"
-                }
-              ]
-            }),
+            __html: JSON.stringify(breadcrumbJsonLd),
           }}
         />
         <GoogleTagManagerNoScript />

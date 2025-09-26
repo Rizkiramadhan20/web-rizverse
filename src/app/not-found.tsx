@@ -1,7 +1,4 @@
 "use client"
-
-export const runtime = 'edge';
-
 import React from 'react'
 
 import Orb from '@/components/ui/Orb';
